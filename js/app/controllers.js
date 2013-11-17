@@ -1,7 +1,4 @@
 var EXTENSION = 'extension';
-var APPS = 'apps';
-var BOOKMARKS = 'bookmarks';
-var RECENT = 'recent';
 
 var appsLauncher = angular.module('appsLauncher', ['ui.sortable']);
 
