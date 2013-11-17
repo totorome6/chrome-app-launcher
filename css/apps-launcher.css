@@ -1,0 +1,74 @@
+body {
+    width: 370px !important;
+    height: 100px !important;
+}
+
+.container {
+    width: 360px !important;
+}
+
+.content {
+    margin: 0 auto;
+    padding: 10px 30px;
+}
+
+@font-face
+{
+  font-family: Roboto;
+  src: url('../fonts/Roboto-Regular.ttf')
+}
+
+@font-face
+{
+  font-family: RobotoCondensed;
+  src: url('../fonts/RobotoCondensed-Regular.ttf')
+}
+
+ul.apps-list li {
+    margin: 0.2em 0;
+}
+
+ul.apps-list.list-inline>li:first-child {
+ padding-left: 5px    
+}
+
+.card {
+    width: 100%;
+    height: 100px;
+    padding: 0.3em;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    transition: all 200ms ease;
+    font-size: small;
+}
+
+.card:hover {
+    transition: all 200ms ease;
+    background-color: #eee;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.5);
+}
+
+.app .icon, .app .name {
+ margin: 0 auto;   
+}
+
+.app .icon {
+    padding: 0.3em;
+    display: block;
+}
+
+.app .name {
+    margin: 0.2em auto;
+    padding: 0.2em;
+    font-family: RobotoCondensed;
+    text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 92px;
+    height: 20px;
+    white-space:nowrap;
+}
+
+.icon {
+ margin: auto;   
+}

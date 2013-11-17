@@ -1,0 +1,35 @@
+<html ng-app='appsLauncher' ng-csp>
+
+<head>
+    <title>Apps</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel='stylesheet' href="css/bootstrap.min.css" />
+    <link rel='stylesheet' href="css/apps-launcher.css" />
+
+
+    <script type='text/javascript' src='js/lib/lodash.min.js'></script>
+    <script type='text/javascript' src='js/lib/jquery-1.9.1.js'></script>
+    <script type='text/javascript' src='js/lib/jquery-ui-1.10.3.custom.min.js'></script>
+    <script type='text/javascript' src='js/lib/angular.min.js'></script>
+    <script type='text/javascript' src='js/lib/sortable.js'></script>
+    <script type='text/javascript' src='js/app/controllers.js'></script>
+</head>
+
+<body>
+    <div class='container content'>
+        <div class='row' ng-controller='AppsController'>
+            <ul ui-sortable ng-model="apps" class="apps-list list-unstyled list-inline">
+                <li class='col-xs-4' ng-repeat='app in apps'>
+                    <div class='app card' ng-click='launch(app)'>
+                        <img class='icon' ng-src='{{ getIconUrl(app) }}' height="64" width="64" />
+                        <div class='name'>{{ app.name }}</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>
+
