@@ -11,8 +11,10 @@ appsLauncher.controller("AppsController", function AppsController($scope) {
 
     $scope.apps = [];
 
-    var getId = function(x) { return x.id; };
-    
+    var getId = function (x) {
+        return x.id;
+    };
+
     var determineAppsList = function (apps, order) {
         if (!order || !order.length) {
             return _.sortBy(apps, function (x) {
@@ -32,22 +34,31 @@ appsLauncher.controller("AppsController", function AppsController($scope) {
             result[i] = apps[curAppIdx];
         }
 
-        return result;
+        return _.filter(result, function(x){ return x; });
     };
 
-    chrome.management.getAll(function (extensions) {
-        var apps = _.filter(extensions, function (x) {
-            return x.type != EXTENSION && x.type != THEME && x.enabled;
-        });
+    var loadApps = function () {
+        chrome.management.getAll(function (extensions) {
+            var apps = _.filter(extensions, function (x) {
+                return x.type != EXTENSION && x.type != THEME && x.enabled;
+            });
 
-        chrome.storage.sync.get('order', function (response) {
-            var order = response.order;
-            var orderedApps = determineAppsList(apps, order ? JSON.parse(response.order) : null);
-            $scope.$apply(function () {
-                $scope.apps = orderedApps;
+            chrome.storage.sync.get('order', function (response) {
+                var order = response.order;
+                var orderedApps = determineAppsList(apps, order ? JSON.parse(response.order) : null);
+                $scope.$apply(function () {
+                    $scope.apps = orderedApps;
+                });
             });
         });
-    });
+    }
+    
+    loadApps();
+    
+    chrome.management.onInstalled.addListener(loadApps);
+    chrome.management.onUninstalled.addListener(loadApps);
+    chrome.management.onEnabled.addListener(loadApps);
+    chrome.management.onDisabled.addListener(loadApps);
 
     $scope.launch = function (app) {
         chrome.management.launchApp(app.id);
@@ -68,12 +79,14 @@ appsLauncher.controller("AppsController", function AppsController($scope) {
     };
 
     $scope.$watch('apps', function (o) {
-        if (!$scope.apps || !$scope.apps.length){
+        if (!$scope.apps || !$scope.apps.length) {
             return;
         }
-        
+
         var appsOrder = JSON.stringify(_.map($scope.apps, getId));
-        chrome.storage.sync.set({ "order": appsOrder }, function () {});
+        chrome.storage.sync.set({
+            "order": appsOrder
+        }, function () {});
     }, true);
 
 
