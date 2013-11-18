@@ -1,4 +1,5 @@
 var EXTENSION = 'extension';
+var THEME = 'theme';
 
 var appsLauncher = angular.module('appsLauncher', ['ui.sortable']);
 
@@ -36,7 +37,7 @@ appsLauncher.controller("AppsController", function AppsController($scope) {
 
     chrome.management.getAll(function (extensions) {
         var apps = _.filter(extensions, function (x) {
-            return x.type != EXTENSION && x.enabled;
+            return x.type != EXTENSION && x.type != THEME && x.enabled;
         });
 
         chrome.storage.sync.get('order', function (response) {
