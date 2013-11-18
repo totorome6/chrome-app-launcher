@@ -5,6 +5,10 @@
     "incognito": "split",
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
     "permissions": ["management", "storage"],
+    "icons": {
+      "48": "images/grid48.png",
+      "128": "images/grid128.png"
+    },
     "browser_action": {
         "default_icon": {
 	  "38": "images/grid128.png",
