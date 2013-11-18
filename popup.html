@@ -19,7 +19,7 @@
 <body>
     <div class='container content'>
         <div class='row' ng-controller='AppsController'>
-            <ul ui-sortable ng-model="apps" class="apps-list list-unstyled list-inline">
+            <ul ui-sortable='sortWidget' ng-model="apps" class="apps-list list-unstyled list-inline">
                 <li class='col-xs-4' ng-repeat='app in apps'>
                     <div class='app card' ng-click='launch(app)'>
                         <img class='icon' ng-src='{{ getIconUrl(app) }}' height="64" width="64" />
