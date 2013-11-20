@@ -40,6 +40,7 @@ ul.apps-list.list-inline>li:first-child {
     box-shadow: 0 1px 2px rgba(0,0,0,0.5);
     transition: all 200ms ease;
     font-size: small;
+    cursor: pointer;
 }
 
 .card:hover {
