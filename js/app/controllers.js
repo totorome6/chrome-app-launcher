@@ -1,21 +1,21 @@
 var EXTENSION = 'extension';
 var THEME = 'theme';
 
-var appsLauncher = angular.module('appsLauncher', ['ui.sortable']);
+var app = angular.module('appsLauncher', []);
 
-appsLauncher.config(function ($compileProvider) {
+app.config(function ($compileProvider) {
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|chrome):/);
 });
 
-appsLauncher.controller("AppsController", function AppsController($scope) {
+app.controller("AppsController", function AppsController($scope) {
 
     $scope.apps = [];
     
-    $scope.sortWidget = {
+    /*$scope.sortWidget = {
       placeholder: 'placeholder',
       forcePlaceholderSize: true,
       tolerance: 'pointer' 
-    };
+    };*/
 
     var getId = function (x) {
         return x.id;
@@ -57,6 +57,8 @@ appsLauncher.controller("AppsController", function AppsController($scope) {
                 });
             });
         });
+        
+        
     }
     
     loadApps();
@@ -83,12 +85,20 @@ appsLauncher.controller("AppsController", function AppsController($scope) {
 
         return icons[maxIconIdx].url || "";
     };
+    
+    $scope.getBgImageStyle = function(app){
+        return { 'background-image': 'url(' + $scope.getIconUrl(app) + ')' }; 
+    };
+    
+    $scope.sortableOptions = function(){
+       return { items: 'li', placeholder: '<li><div class="app card" ><div class="icon"></div><div class="name"></div></div></li>' };
+    };
 
     $scope.$watch('apps', function (o) {
         if (!$scope.apps || !$scope.apps.length) {
             return;
         }
-
+        
         var appsOrder = JSON.stringify(_.map($scope.apps, getId));
         chrome.storage.sync.set({
             "order": appsOrder
@@ -97,3 +107,64 @@ appsLauncher.controller("AppsController", function AppsController($scope) {
 
 
 });
+
+/*
+ * AngularJS integration with the HTML5 Sortable jQuery Plugin
+ * https://github.com/voidberg/html5sortable
+ *
+ * Copyright 2013, Alexandru Badiu <andu@ctrlz.ro>
+ *
+ * Thanks to the following contributors: samantp.
+ *
+ * Released under the MIT license.
+ */
+app.directive('htmlSortable', [
+  '$timeout', function($timeout) {
+    return {
+      require: '?ngModel',
+      link: function(scope, element, attrs, ngModel) {
+        var opts, model;
+
+        opts = angular.extend({}, scope.$eval(attrs.htmlSortable));
+        if (ngModel) {
+          model = attrs.ngModel;
+          ngModel.$render = function() {
+            $timeout(function () {
+              element.sortable('reload');
+            }, 50);
+          };
+          
+          scope.$watch(model, function() {
+            $timeout(function () {
+              element.sortable('reload');
+            }, 50);
+          }, true);
+        }
+
+        // Create sortable
+        $(element).sortable(opts);
+        if (model) {
+          $(element).sortable().bind('sortupdate', function(e, data) {
+            var $source = data.startparent.attr('ng-model');
+            var $dest   = data.endparent.attr('ng-model');
+
+            var $start = data.oldindex;
+            var $end   = data.item.index();
+          
+            scope.$apply(function () {
+              if ($source == $dest) {
+                scope[model].splice($end, 0, scope[model].splice($start, 1)[0]);
+              }
+              else {
+                var $item = scope[$source][$start];
+
+                scope[$source].splice($start, 1);
+                scope[$dest].splice($end, 0, $item);
+              }
+            });
+          });
+        }
+      }
+    };
+  }
+]);

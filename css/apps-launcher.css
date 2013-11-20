@@ -1,15 +1,5 @@
 body {
-    width: 370px !important;
-    height: 100px !important;
-}
-
-.container {
-    width: 360px !important;
-}
-
-.content {
-    margin: 0 auto;
-    padding: 10px 30px;
+    width: 350px;
 }
 
 @font-face
@@ -24,16 +14,26 @@ body {
   src: url('../fonts/RobotoCondensed-Regular.ttf')
 }
 
-ul.apps-list li {
-    margin: 0.2em 0;
+ul.apps-list {
+ list-style-type: none;
+ width: auto; 
+ margin: 0;
+-webkit-margin-before: 0.2em;
+-webkit-margin-after: 0.2em;
+-webkit-margin-start: 0px;
+-webkit-margin-end: 0px;
+-webkit-padding-start: 0px;    
 }
 
-ul.apps-list.list-inline>li:first-child {
- padding-left: 5px    
+ul.apps-list li {
+    margin: 0.3em 0em;
+    width: 31%;
+    display: inline-block;
+    padding: 0.2em;
 }
 
 .card {
-    width: 100%;
+    width: 100px;
     height: 100px;
     padding: 0.3em;
     border-radius: 3px;
@@ -71,5 +71,11 @@ ul.apps-list.list-inline>li:first-child {
 }
 
 .icon {
- margin: auto;   
+ margin: auto;
+ width: 100%;
+    
+ height: 64px;
+    background-position: center center;
+ background-size: 64px 64px;
+ background-repeat:no-repeat;    
 }
