@@ -51,8 +51,6 @@ app.controller("AppsController", function AppsController($scope) {
                 });
             });
         });
-        
-        
     }
     
     loadApps();
@@ -98,8 +96,7 @@ app.controller("AppsController", function AppsController($scope) {
             "order": appsOrder
         }, function () {});
     }, true);
-
-
+    
 });
 
 /*

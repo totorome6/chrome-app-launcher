@@ -1,5 +1,4 @@
 <html ng-app='appsLauncher' ng-csp>
-
 <head>
     <title>Apps</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,19 +11,17 @@
     <script type='text/javascript' src='js/lib/angular.min.js'></script>
     <script type='text/javascript' src='js/app/controllers.js'></script>
 </head>
-
-<body >
+<body>
     <div ng-controller='AppsController'>
         <ul html-sortable="sortableOptions()" ng-model="apps" class="apps-list">
             <li class='app-container' ng-repeat='app in apps'>
-                <div class='app card'  ng-click='launch(app)'>
-                    <div class='icon' ng-style='getBgImageStyle(app)' ></div>
+                <div class='app card' ng-click='launch(app)'>
+                    <div class='icon' ng-style='getBgImageStyle(app)'></div>
                     <div class='name'>{{ app.name }}</div>
                 </div>
             </li>
         </ul>
     </div>
 </body>
-
 </html>
 
