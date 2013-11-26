@@ -11,12 +11,6 @@ app.controller("AppsController", function AppsController($scope) {
 
     $scope.apps = [];
     
-    /*$scope.sortWidget = {
-      placeholder: 'placeholder',
-      forcePlaceholderSize: true,
-      tolerance: 'pointer' 
-    };*/
-
     var getId = function (x) {
         return x.id;
     };
