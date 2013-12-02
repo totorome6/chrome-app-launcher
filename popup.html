@@ -3,16 +3,18 @@
     <title>Apps</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel='stylesheet' href="css/apps-launcher.css" />
-
+    <link rel='stylesheet' href="css/popup.css" />
+    <link rel='stylesheet' href="css/popup-large.css" />
+    <link rel='stylesheet' href="css/popup-small.css" />
+    
     <script type='text/javascript' src='js/lib/lodash.min.js'></script>
     <script type='text/javascript' src='js/lib/jquery-1.9.1.min.js'></script>
     <script type='text/javascript' src='js/lib/jquery.sortable.js'></script>
     <script type='text/javascript' src='js/lib/angular.min.js'></script>
-    <script type='text/javascript' src='js/app/controllers.js'></script>
+    <script type='text/javascript' src='js/app/popup.js'></script>
 </head>
 <body>
-    <div ng-controller='AppsController'>
+    <div class='small' ng-controller='AppsController'>
         <ul html-sortable="sortableOptions()" ng-model="apps" class="apps-list">
             <li class='app-container' ng-repeat='app in apps'>
                 <div class='app card' ng-click='launch(app)'>
@@ -22,6 +24,7 @@
             </li>
         </ul>
     </div>
+    <div style='clear: both;'></div>
 </body>
 </html>
 

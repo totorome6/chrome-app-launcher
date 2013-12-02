@@ -1,0 +1,8 @@
+body {
+    background-color: gray;
+}
+body .container {
+    height: 100%;
+    background-color: white;
+    font-size: 130%;
+}

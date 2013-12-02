@@ -1,0 +1,68 @@
+<html ng-app='options' ng-csp>
+
+<head>
+    <title>Options</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel='stylesheet' href="css/bootstrap.min.css" />
+    <link rel='stylesheet' href="css/options.css" />
+
+    <script type='text/javascript' src='js/lib/lodash.min.js'></script>
+    <script type='text/javascript' src='js/lib/jquery-1.9.1.min.js'></script>
+    <script type='text/javascript' src='js/lib/jquery.sortable.js'></script>
+    <script type='text/javascript' src='js/lib/angular.min.js'></script>
+    <script type='text/javascript' src='js/app/options.js'></script>
+</head>
+
+<body>
+
+    <div class="container" ng-controller='OptionsController'>
+        <div class='row'>
+            <div class='col-md-12'>
+                <h1>
+                    <img style='display: inline-block; max-height: 150px;' src='images/grid64.png' />&nbsp;Apps Launcher
+                    <small>Options</small>
+                </h1>
+            </div>
+        </div>
+        <form role="form" class="form-horizontal">
+            <div class="form-group">
+                <div class="col-md-offset-1 col-md-11">
+                    <label>Icon size &nbsp;<small>You can change the app icon size here.</small></label>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name='iconSize' value='large'>Make them bigger and add a caption below.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name='iconSize' value='small'>I like them smaller with no caption at all.
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-1 col-md-11">
+                    <label>Search bar</label>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name='searchBar' value='on'>I'd like to search through my apps.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name='searchBar' value='off'>Hide the search bar. I do not need it.
+                        </label>
+                    </div>
+                </div>
+            </div>            
+            <div class='form-group'>
+                <div class='col-md-offset-4 col-md-8'>
+                    <button type='button' class="btn btn-primary btn-lg">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

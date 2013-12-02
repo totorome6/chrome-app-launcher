@@ -1,5 +1,6 @@
 body {
     width: 350px;
+    padding-bottom: 10px;
 }
 @font-face {
     font-family: Roboto;
@@ -9,6 +10,7 @@ body {
     font-family: RobotoCondensed;
     src: url('../fonts/RobotoCondensed-Regular.ttf')
 }
+
 ul.apps-list {
     list-style-type: none;
     width: auto;
@@ -19,16 +21,16 @@ ul.apps-list {
     -webkit-margin-end: 0px;
     -webkit-padding-start: 0px;
 }
+
 ul.apps-list li {
     margin: 0em;
-    width: 31%;
+    
     display: inline-block;
     padding: 0.2em;
     float: left;
 }
+
 .card {
-    width: 100px;
-    height: 100px;
     padding: 0.3em;
     border-radius: 3px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
@@ -36,6 +38,7 @@ ul.apps-list li {
     font-size: small;
     cursor: pointer;
 }
+
 .card:hover {
     transition: all 200ms ease;
     background-color: #eee;
@@ -45,26 +48,26 @@ ul.apps-list li {
 .app .name {
     margin: 0 auto;
 }
+
 .app .icon {
-    padding: 0.3em;
     display: block;
 }
+
 .app .name {
-    margin: 0.2em auto;
+    margin: 0.3em auto;
     padding: 0.2em;
     font-family: RobotoCondensed;
     text-align: center;
     text-overflow: ellipsis;
     overflow: hidden;
-    width: 92px;
-    height: 20px;
+
     white-space: nowrap;
 }
+
 .icon {
     margin: auto;
-    width: 100%;
-    height: 64px;
     background-position: center center;
-    background-size: 64px 64px;
     background-repeat: no-repeat;
 }
+
+
