@@ -1,6 +1,22 @@
 var EXTENSION = 'extension';
 var THEME = 'theme';
 
+var tryMigrateFromSyncToLocalStorage = function () {
+    chrome.storage.sync.get('order', function (response) {
+        if (!response || !response.order) {
+            return;
+        }
+
+        chrome.storage.local.set({
+            'order': response.order
+        }, function () {});
+
+        chrome.storage.sync.clear(function () {});
+    });
+};
+
+tryMigrateFromSyncToLocalStorage();
+
 var app = angular.module('appsLauncher', []);
 
 app.config(function ($compileProvider) {
@@ -10,7 +26,7 @@ app.config(function ($compileProvider) {
 app.controller("AppsController", function AppsController($scope) {
 
     $scope.apps = [];
-    
+
     var getId = function (x) {
         return x.id;
     };
@@ -34,7 +50,9 @@ app.controller("AppsController", function AppsController($scope) {
             result[i] = apps[curAppIdx];
         }
 
-        return _.filter(result, function(x){ return x; });
+        return _.filter(result, function (x) {
+            return x;
+        });
     };
 
     var loadApps = function () {
@@ -43,22 +61,27 @@ app.controller("AppsController", function AppsController($scope) {
                 return x.type != EXTENSION && x.type != THEME && x.enabled;
             });
 
-            chrome.storage.sync.get('order', function (response) {
+            chrome.storage.local.get('order', function (response) {
                 var order = response.order;
                 var orderedApps = determineAppsList(apps, order ? JSON.parse(response.order) : null);
                 $scope.$apply(function () {
                     $scope.apps = orderedApps;
                 });
             });
+
         });
-    }
-    
-    loadApps();
-    
-    chrome.management.onInstalled.addListener(loadApps);
-    chrome.management.onUninstalled.addListener(loadApps);
-    chrome.management.onEnabled.addListener(loadApps);
-    chrome.management.onDisabled.addListener(loadApps);
+    };
+
+    var saveAppsOrder = function (apps) {
+        if (!apps || !apps.length) {
+            return;
+        }
+
+        var appsOrder = JSON.stringify(_.map(apps, getId));
+        chrome.storage.local.set({
+            "order": appsOrder
+        }, function () {});
+    };
 
     $scope.launch = function (app) {
         chrome.management.launchApp(app.id);
@@ -77,26 +100,30 @@ app.controller("AppsController", function AppsController($scope) {
 
         return icons[maxIconIdx].url || "";
     };
-    
-    $scope.getBgImageStyle = function(app){
-        return { 'background-image': 'url(' + $scope.getIconUrl(app) + ')' }; 
-    };
-    
-    $scope.sortableOptions = function(){
-       return { items: 'li', placeholder: '<li><div class="app card" ><div class="icon"></div><div class="name"></div></div></li>' };
+
+    $scope.getBgImageStyle = function (app) {
+        return {
+            'background-image': 'url(' + $scope.getIconUrl(app) + ')'
+        };
     };
 
+    $scope.sortableOptions = function () {
+        return {
+            items: 'li',
+            placeholder: '<li><div class="app card" ><div class="icon"></div><div class="name"></div></div></li>'
+        };
+    };
+
+    loadApps();
+
+    chrome.management.onInstalled.addListener(loadApps);
+    chrome.management.onUninstalled.addListener(loadApps);
+    chrome.management.onEnabled.addListener(loadApps);
+    chrome.management.onDisabled.addListener(loadApps);
+
     $scope.$watch('apps', function (o) {
-        if (!$scope.apps || !$scope.apps.length) {
-            return;
-        }
-        
-        var appsOrder = JSON.stringify(_.map($scope.apps, getId));
-        chrome.storage.sync.set({
-            "order": appsOrder
-        }, function () {});
+        saveAppsOrder($scope.apps);
     }, true);
-    
 });
 
 /*
@@ -110,52 +137,52 @@ app.controller("AppsController", function AppsController($scope) {
  * Released under the MIT license.
  */
 app.directive('htmlSortable', [
-  '$timeout', function($timeout) {
-    return {
-      require: '?ngModel',
-      link: function(scope, element, attrs, ngModel) {
-        var opts, model;
+  '$timeout',
+    function ($timeout) {
+        return {
+            require: '?ngModel',
+            link: function (scope, element, attrs, ngModel) {
+                var opts, model;
 
-        opts = angular.extend({}, scope.$eval(attrs.htmlSortable));
-        if (ngModel) {
-          model = attrs.ngModel;
-          ngModel.$render = function() {
-            $timeout(function () {
-              element.sortable('reload');
-            }, 50);
-          };
-          
-          scope.$watch(model, function() {
-            $timeout(function () {
-              element.sortable('reload');
-            }, 50);
-          }, true);
-        }
+                opts = angular.extend({}, scope.$eval(attrs.htmlSortable));
+                if (ngModel) {
+                    model = attrs.ngModel;
+                    ngModel.$render = function () {
+                        $timeout(function () {
+                            element.sortable('reload');
+                        }, 50);
+                    };
 
-        // Create sortable
-        $(element).sortable(opts);
-        if (model) {
-          $(element).sortable().bind('sortupdate', function(e, data) {
-            var $source = data.startparent.attr('ng-model');
-            var $dest   = data.endparent.attr('ng-model');
+                    scope.$watch(model, function () {
+                        $timeout(function () {
+                            element.sortable('reload');
+                        }, 50);
+                    }, true);
+                }
 
-            var $start = data.oldindex;
-            var $end   = data.item.index();
-          
-            scope.$apply(function () {
-              if ($source == $dest) {
-                scope[model].splice($end, 0, scope[model].splice($start, 1)[0]);
-              }
-              else {
-                var $item = scope[$source][$start];
+                // Create sortable
+                $(element).sortable(opts);
+                if (model) {
+                    $(element).sortable().bind('sortupdate', function (e, data) {
+                        var $source = data.startparent.attr('ng-model');
+                        var $dest = data.endparent.attr('ng-model');
 
-                scope[$source].splice($start, 1);
-                scope[$dest].splice($end, 0, $item);
-              }
-            });
-          });
-        }
-      }
-    };
+                        var $start = data.oldindex;
+                        var $end = data.item.index();
+
+                        scope.$apply(function () {
+                            if ($source == $dest) {
+                                scope[model].splice($end, 0, scope[model].splice($start, 1)[0]);
+                            } else {
+                                var $item = scope[$source][$start];
+
+                                scope[$source].splice($start, 1);
+                                scope[$dest].splice($end, 0, $item);
+                            }
+                        });
+                    });
+                }
+            }
+        };
   }
 ]);
