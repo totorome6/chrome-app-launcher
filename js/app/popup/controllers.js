@@ -20,6 +20,7 @@ function AppsController($scope, appsService, iconsService, settingsService) {
 
     $scope.launch = function (app) {
         chrome.management.launchApp(app.id);
+        window.close();
     }
 
     $scope.getIconUrl = function (app) {
