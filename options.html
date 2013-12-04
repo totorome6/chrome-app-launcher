@@ -4,6 +4,7 @@
     <title>Options</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel='stylesheet' href="css/angular-csp.css" />
     <link rel='stylesheet' href="css/bootstrap.min.css" />
     <link rel='stylesheet' href="css/options.css" />
 
@@ -11,7 +12,8 @@
     <script type='text/javascript' src='js/lib/jquery-1.9.1.min.js'></script>
     <script type='text/javascript' src='js/lib/jquery.sortable.js'></script>
     <script type='text/javascript' src='js/lib/angular.min.js'></script>
-    <script type='text/javascript' src='js/app/options.js'></script>
+    <script type='text/javascript' src='js/app/options/app.js'></script>
+    <script type='text/javascript' src='js/app/common.js'></script>
 </head>
 
 <body>
@@ -28,37 +30,42 @@
         <form role="form" class="form-horizontal">
             <div class="form-group">
                 <div class="col-md-offset-1 col-md-11">
-                    <label>Icon size &nbsp;<small>You can change the app icon size here.</small></label>
+                    <label>Icon size</label>
                     <div class="radio">
                         <label>
-                            <input type="radio" name='iconSize' value='large'>Make them bigger and add a caption below.
+                            <i class='glyphicon glyphicon-th-large'></i>
+                            <input type="radio" name='iconSize' value='large' ng-model='settings.iconSize'>&nbsp;Make them bigger and add a caption below.
+
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name='iconSize' value='small'>I like them smaller with no caption at all.
+                            <i class='glyphicon glyphicon-th'></i>
+                            <input type="radio" name='iconSize' value='small' ng-model='settings.iconSize'>&nbsp;I like them smaller with no caption at all.
                         </label>
                     </div>
                 </div>
             </div>
-            <div class="form-group">
+            <div ng-show='false' class="form-group">
                 <div class="col-md-offset-1 col-md-11">
                     <label>Search bar</label>
                     <div class="radio">
                         <label>
-                            <input type="radio" name='searchBar' value='on'>I'd like to search through my apps.
+                            <input type="radio" name='searchBar' value='on' ng-model='settings.searchBar'>I'd like to search through my apps.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name='searchBar' value='off'>Hide the search bar. I do not need it.
+                            <input type="radio" name='searchBar' value='off' ng-model='settings.searchBar'>Hide the search bar. I do not need it.
                         </label>
                     </div>
                 </div>
-            </div>            
+            </div>
             <div class='form-group'>
                 <div class='col-md-offset-4 col-md-8'>
-                    <button type='button' class="btn btn-primary btn-lg">Save</button>
+                    <button type='button' class="btn btn-primary btn-lg" ng-click='save()' >
+                        <i ng-show='saved' class='glyphicon glyphicon-check '></i>&nbsp;Save
+                    </button>
                 </div>
             </div>
         </form>

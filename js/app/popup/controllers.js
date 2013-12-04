@@ -1,6 +1,6 @@
 'use strict'
 
-function AppsController($scope, appsService, iconsService) {
+function AppsController($scope, appsService, iconsService, settingsService) {
 
     $scope.apps = [];
 
@@ -9,6 +9,13 @@ function AppsController($scope, appsService, iconsService) {
         .then(function(apps){
             $scope.apps = apps;  
         });
+    };
+    
+    var loadSettings = function(){
+      settingsService.get()
+       .then(function(settings){
+          $scope.settings = settings; 
+       });
     };
 
     $scope.launch = function (app) {
@@ -30,6 +37,7 @@ function AppsController($scope, appsService, iconsService) {
         };
     };
 
+    loadSettings();
     loadApps();
 
     chrome.management.onInstalled.addListener(loadApps);
@@ -42,4 +50,4 @@ function AppsController($scope, appsService, iconsService) {
     }, true);
 }
 
-AppsController.$inject = [ '$scope', 'appsService', 'iconsService' ];
+AppsController.$inject = [ '$scope', 'appsService', 'iconsService', 'settingsService' ];

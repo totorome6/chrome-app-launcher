@@ -16,7 +16,8 @@ tryMigrateFromSyncToLocalStorage();
 
 var app = angular.module('launcher', [
     'launcher.services',
-    'launcher.directives'
+    'launcher.directives',
+    'common'
 ]);
 
 app.config(function ($compileProvider) {
