@@ -89,4 +89,28 @@ launcherServices
     return {
      getIconUrl: getIconUrl
     };
+}])
+.factory('gridService', [ function(){
+    
+    var translateGridMoveToListMove = function(gridWidth, move){
+
+        if (move == 'left'){
+            return -1;
+        }
+        else if (move == 'right'){
+            return 1;
+        }
+        else if (move == 'up'){
+            return gridWidth;
+        }
+        else if (move == 'down'){
+            return -gridWidth;   
+        }
+        
+        return 0;
+    };
+    
+    return {
+      translateGridMoveToListMove: translateGridMoveToListMove   
+    };
 }]);

@@ -1,6 +1,15 @@
 'use strict'
 
-function AppsController($scope, appsService, iconsService, settingsService) {
+var ENTER = 13;
+
+var GRID_MOVES = {
+  38: 'up',
+  40: 'down',
+  37: 'left',
+  39: 'right'
+};
+
+function AppsController($scope, appsService, iconsService, gridService, settingsService) {
 
     $scope.apps = [];
 
@@ -37,6 +46,17 @@ function AppsController($scope, appsService, iconsService, settingsService) {
             placeholder: '<li><div class="app card" ><div class="icon"></div><div class="name"></div></div></li>'
         };
     };
+    
+    $scope.handleKeys = function(e, appIndex, app) {
+        var key = e.keyCode;
+        if (key == 13){
+            $scope.launch(app);   
+        }
+        else if (key >= 37 && key <= 40){
+            var listMove = gridService.translateGridMoveToListMove(5, GRID_MOVES[key]);
+            console.log(e);
+        }   
+    };
 
     loadSettings();
     loadApps();
@@ -51,4 +71,4 @@ function AppsController($scope, appsService, iconsService, settingsService) {
     }, true);
 }
 
-AppsController.$inject = [ '$scope', 'appsService', 'iconsService', 'settingsService' ];
+AppsController.$inject = [ '$scope', 'appsService', 'iconsService', 'gridService', 'settingsService' ];
