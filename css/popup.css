@@ -39,7 +39,7 @@ ul.apps-list li {
     cursor: pointer;
 }
 
-.card:hover {
+.card:hover, .card:focus {
     transition: all 200ms ease;
     background-color: #eee;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
