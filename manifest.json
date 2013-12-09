@@ -1,22 +1,32 @@
 {
     "name": "Apps Launcher",
     "description": "Launch Chrome apps using a fancy popup. Reorder them as you like.",
-    "version": "0.6.1",
+    "version": "0.6.3",
     "incognito": "split",
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
-    "permissions": ["management", "storage"],
+    "permissions": [ "management", "storage" ],
     "icons": {
-      "48": "images/grid48.png",
-      "128": "images/grid128.png"
+        "48": "images/grid48.png",
+        "128": "images/grid128.png"
     },
     "browser_action": {
-      "default_icon": {
-	  "38": "images/grid128.png",
-	  "19": "images/grid64.png"
-	},
+        "default_icon": {
+            "38": "images/grid128.png",
+            "19": "images/grid64.png"
+        },
         "default_title": "Apps",
         "default_popup": "popup.html"
     },
     "options_page": "options.html",
+    "commands": {
+        "_execute_browser_action": {
+          "suggested_key": {
+            "windows": "Ctrl+Period",
+            "mac": "Command+Period",
+            "chromeos": "Ctrl+Period",
+            "linux": "Ctrl+Period"
+          }
+        }
+    },
     "manifest_version": 2
 }
