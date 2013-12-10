@@ -93,80 +93,71 @@ launcherServices
                 getIconUrl: getIconUrl
             };
 }])
-    .factory('gridService', [
+    .factory('gridFactory', [
             function () {
 
-                
-
-                var AppGrid = function (itemsCount, gridWidth) {
+                var Grid = function (itemsCount, gridWidth) {
                     var self = this;
 
                     self.itemsCount = itemsCount;
                     self.gridWidth = gridWidth;
+                };
+                
+                Grid.prototype.rowsCount = function () {
+                    return Math.ceil(this.itemsCount / this.gridWidth);
+                };
+                
+                Grid.prototype.cellsCount = function () {
+                  return this.rowsCount() * this.gridWidth;  
+                };
+                
+                Grid.prototype.positionExists = function (position) {
+                    return (position / this.gridWidth) < (this.itemsCount / this.gridWidth);
+                };
+                
+                Grid.prototype.translatePosition = function (position, vector) {
+                    var cellsCount = this.cellsCount();
+                    return (cellsCount + position + vector) % cellsCount;
+                };
+                
+                Grid.prototype.getListVector = function (move, gridWidth) {
 
-                    self.completeRowsCount = function () {
-                        return Math.floor(self.itemsCount / self.gridWidth);
-                    };
+                    if (move == 'left') {
+                        return -1;
+                    }
 
-                    self.rowsCount = function () {
-                        return Math.ceil(self.itemsCount / self.gridWidth);
-                    };
+                    if (move == 'right') {
+                        return 1;
+                    }
 
-                    self.isInCompleteRow = function (position) {
-                        var rowIdx = Math.ceil(position / self.gridWidth);
-                        return rowIdx <= self.completeRowsCount();
-                    };
+                    if (move == 'up') {
+                        return -gridWidth;
+                    }
                     
-                    self.cellsCount = function () {
-                      return self.rowsCount() * self.gridWidth;  
-                    };
-
-                    self.positionExists = function (position) {
-                        return (position / self.gridWidth) < (self.itemsCount / self.gridWidth);
-                    };
+                    if (move == 'down') {
+                        return gridWidth;
+                    }
                     
-                    self.translatePosition = function (position, vector) {
-                        var cellsCount = self.cellsCount();
-                        return (cellsCount + position + vector) % cellsCount;
-                    };
+                    return 0;
+                };
+                
+                Grid.prototype.moveOnGrid = function (position, move) {
+                    var self = this;
+                    var vector = self.getListVector(move, self.gridWidth);
+                    var newPos = self.translatePosition(position, vector);
+                    while (!self.positionExists(newPos)) {
+                        vector = vector + self.getListVector(move, self.gridWidth);
+                        newPos = self.translatePosition(position, vector);
+                    }
                     
-                    self.getListVector = function (move, gridWidth) {
-
-                        if (move == 'left') {
-                            return -1;
-                        }
-    
-                        if (move == 'right') {
-                            return 1;
-                        }
-    
-                        if (move == 'up') {
-                            return -gridWidth;
-                        }
-                        
-                        if (move == 'down') {
-                            return gridWidth;
-                        }
-                    };
-
-                    self.moveOnGrid = function (position, move) {
-                        var vector = self.getListVector(move, self.gridWidth);
-                        var newPos = self.translatePosition(position, vector);
-                        while (!self.positionExists(newPos)) {
-                            vector = vector + self.getListVector(move, self.gridWidth);
-                            newPos = self.translatePosition(position, vector);
-                        }
-                        
-                        return newPos;
-                    };
+                    return newPos;
                 };
 
-                var calcPositionOnGrid = function (position, move, itemsCount, gridWidth) {
-                    var grid = new AppGrid(itemsCount, gridWidth);
-                    return grid.moveOnGrid(position, move);
+                var buildGrid = function (itemsCount, gridWidth){
+                 return new Grid(itemsCount, gridWidth);   
                 };
 
                     return {
-                        calcPositionOnGrid: calcPositionOnGrid
+                        buildGrid: buildGrid
                     };
                 }]);

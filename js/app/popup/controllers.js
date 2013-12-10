@@ -3,34 +3,39 @@
 var ENTER = 13;
 
 var GRID_MOVES = {
-  38: 'up',
-  40: 'down',
-  37: 'left',
-  39: 'right'
+    38: 'up',
+    40: 'down',
+    37: 'left',
+    39: 'right'
 };
 
 var GRID_WIDTHS = {
-  'large': 3,
-  'small': 5
+    'large': 3,
+    'small': 5
 };
 
-function AppsController($scope, appsService, iconsService, gridService, settingsService) {
+function AppsController($scope, $q, appsService, iconsService, gridFactory, settingsService) {
 
     $scope.apps = [];
     $scope.focusedAppIndex = 0;
+    $scope.grid = null;
 
-    var loadApps = function(){
+    var loadApps = function () {
         appsService.loadApps()
-        .then(function(apps){
-            $scope.apps = apps;  
-        });
+            .then(function (apps) {
+                $scope.apps = apps;
+                
+            });
     };
-    
-    var loadSettings = function(){
-      settingsService.get()
-       .then(function(settings){
-          $scope.settings = settings; 
-       });
+
+    var initialize = function () {
+        settingsService.get()
+            .then(function (settings) {
+                $scope.settings = settings;
+            })
+            .then(function () {
+                loadApps();
+            });
     };
 
     $scope.launch = function (app) {
@@ -43,7 +48,9 @@ function AppsController($scope, appsService, iconsService, gridService, settings
     };
 
     $scope.getBgImageStyle = function (app) {
-        return { 'background-image': 'url(' + $scope.getIconUrl(app) + ')' };
+        return {
+            'background-image': 'url(' + $scope.getIconUrl(app) + ')'
+        };
     };
 
     $scope.sortableOptions = function () {
@@ -52,25 +59,23 @@ function AppsController($scope, appsService, iconsService, gridService, settings
             placeholder: '<li><div class="app card" ><div class="icon"></div><div class="name"></div></div></li>'
         };
     };
-    
-    $scope.handleKeys = function(e, appIndex, app) {
+
+    $scope.handleKeys = function (e, appIndex, app) {
         var key = e.keyCode;
-        if (key == 13){
-            $scope.launch(app);   
-        }
-        else if (key >= 37 && key <= 40) {
-            var index = gridService.calcPositionOnGrid(appIndex, GRID_MOVES[key], $scope.apps.length, GRID_WIDTHS[$scope.settings.iconSize]);
+        if (key == 13) {
+            $scope.launch(app);
+        } else if (key >= 37 && key <= 40) {
+            var index = $scope.grid.moveOnGrid(appIndex, GRID_MOVES[key]);
             $scope.updateFocusedApp(index);
-        }   
+        }
     };
-    
-    $scope.updateFocusedApp = function(index){
+
+    $scope.updateFocusedApp = function (index) {
         $scope.focusedAppIndex = index;
     };
-    
 
-    loadSettings();
-    loadApps();
+
+    initialize();
 
     chrome.management.onInstalled.addListener(loadApps);
     chrome.management.onUninstalled.addListener(loadApps);
@@ -79,7 +84,15 @@ function AppsController($scope, appsService, iconsService, gridService, settings
 
     $scope.$watch('apps', function (o) {
         appsService.saveOrder($scope.apps);
+
+        if (!$scope.grid){
+            $scope.grid = gridFactory.buildGrid($scope.apps.length, GRID_WIDTHS[$scope.settings.iconSize]);   
+        }
+        
+        if ($scope.grid.itemsCount != $scope.apps.length) {
+            $scope.grid.itemsCount = $scope.apps.length;
+        }
     }, true);
 }
 
-AppsController.$inject = [ '$scope', 'appsService', 'iconsService', 'gridService', 'settingsService' ];
+AppsController.$inject = ['$scope', '$q', 'appsService', 'iconsService', 'gridFactory', 'settingsService'];
