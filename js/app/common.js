@@ -10,7 +10,7 @@ common.service("settingsService", [
         var getDefaultSettings = function () {
             return {
                 'iconSize': 'large',
-                'searchBar': 'off'
+                'searchBar': 'off',
             };
         };
 

@@ -9,9 +9,15 @@ var GRID_MOVES = {
   39: 'right'
 };
 
+var GRID_WIDTHS = {
+  'large': 3,
+  'small': 5
+};
+
 function AppsController($scope, appsService, iconsService, gridService, settingsService) {
 
     $scope.apps = [];
+    $scope.focusedAppIndex = 0;
 
     var loadApps = function(){
         appsService.loadApps()
@@ -52,11 +58,16 @@ function AppsController($scope, appsService, iconsService, gridService, settings
         if (key == 13){
             $scope.launch(app);   
         }
-        else if (key >= 37 && key <= 40){
-            var listMove = gridService.translateGridMoveToListMove(5, GRID_MOVES[key]);
-            console.log(e);
+        else if (key >= 37 && key <= 40) {
+            var index = gridService.calcPositionOnGrid(appIndex, GRID_MOVES[key], $scope.apps.length, GRID_WIDTHS[$scope.settings.iconSize]);
+            $scope.updateFocusedApp(index);
         }   
     };
+    
+    $scope.updateFocusedApp = function(index){
+        $scope.focusedAppIndex = index;
+    };
+    
 
     loadSettings();
     loadApps();
