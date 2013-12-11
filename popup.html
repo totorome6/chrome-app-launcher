@@ -25,7 +25,7 @@
                 <div class='app card' tabindex='1' 
                      ng-click='launch(app)' 
                      ng-keyup='handleKeys($event, $index, app)'
-                     ng-mouseover='updateFocusedApp($index)'
+                     ng-mouseenter='updateFocusedApp($index)'
                      focus-me='{{ focusedAppIndex == $index }}' >
                     <div class='icon' ng-style='getBgImageStyle(app)'></div>
                     <div class='name'>{{ app.name }}</div>
