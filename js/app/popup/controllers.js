@@ -35,6 +35,24 @@ function AppsController($scope, $q, appsService, iconsService, gridFactory, sett
             })
             .then(function () {
                 loadApps();
+            })
+            .then(function(){
+                chrome.management.onInstalled.addListener(loadApps);
+                chrome.management.onUninstalled.addListener(loadApps);
+                chrome.management.onEnabled.addListener(loadApps);
+                chrome.management.onDisabled.addListener(loadApps);
+            
+                $scope.$watch('apps', function (o) {
+                    appsService.saveOrder($scope.apps);
+            
+                    if (!$scope.grid){
+                        $scope.grid = gridFactory.buildGrid($scope.apps.length, GRID_WIDTHS[$scope.settings.iconSize]);   
+                    }
+                    
+                    if ($scope.grid.itemsCount != $scope.apps.length) {
+                        $scope.grid.itemsCount = $scope.apps.length;
+                    }
+                }, true);  
             });
     };
 
@@ -76,23 +94,6 @@ function AppsController($scope, $q, appsService, iconsService, gridFactory, sett
 
 
     initialize();
-
-    chrome.management.onInstalled.addListener(loadApps);
-    chrome.management.onUninstalled.addListener(loadApps);
-    chrome.management.onEnabled.addListener(loadApps);
-    chrome.management.onDisabled.addListener(loadApps);
-
-    $scope.$watch('apps', function (o) {
-        appsService.saveOrder($scope.apps);
-
-        if (!$scope.grid){
-            $scope.grid = gridFactory.buildGrid($scope.apps.length, GRID_WIDTHS[$scope.settings.iconSize]);   
-        }
-        
-        if ($scope.grid.itemsCount != $scope.apps.length) {
-            $scope.grid.itemsCount = $scope.apps.length;
-        }
-    }, true);
 }
 
 AppsController.$inject = ['$scope', '$q', 'appsService', 'iconsService', 'gridFactory', 'settingsService'];
