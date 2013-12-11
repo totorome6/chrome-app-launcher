@@ -2,6 +2,7 @@ body {
     width: 350px;
     padding-bottom: 10px;
 }
+
 @font-face {
     font-family: Roboto;
     src: url('../fonts/Roboto-Regular.ttf')
@@ -24,10 +25,8 @@ ul.apps-list {
 
 ul.apps-list li {
     margin: 0em;
-    
     display: inline-block;
     padding: 0.2em;
-    float: left;
 }
 
 .card {
@@ -39,9 +38,10 @@ ul.apps-list li {
     cursor: pointer;
 }
 
-.card:hover, .card:focus {
+.card:focus {
+    outline: none;
     transition: all 200ms ease;
-    background-color: #eee;
+    background-color: #ddd;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
 }
 .app .icon,
