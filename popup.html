@@ -29,7 +29,8 @@
                      ng-click='launch(app)' 
                      ng-keyup='handleKeys($event, $index, app)'
                      ng-mouseenter='updateFocusedApp($index)'
-                     focus-me='{{ focusedAppIndex == $index }}' >
+                     focus-me='{{ focusedAppIndex == $index }}'
+                     right-click='uninstall(app)' >
                     <div class='icon' ng-style='getBgImageStyle(app)'></div>
                     <div class='name'>{{ app.name }}</div>
                 </div>

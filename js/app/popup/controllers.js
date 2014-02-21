@@ -60,6 +60,11 @@ function AppsController($scope, $q, appsService, iconsService, gridFactory, sett
         chrome.management.launchApp(app.id);
         window.close();
     }
+    
+    $scope.uninstall = function (app) {
+        chrome.management.uninstall(app.id, { showConfirmDialog: true });
+        window.close();
+    }
 
     $scope.getIconUrl = function (app) {
         return iconsService.getIconUrl(app);
@@ -80,8 +85,11 @@ function AppsController($scope, $q, appsService, iconsService, gridFactory, sett
 
     $scope.handleKeys = function (e, appIndex, app) {
         var key = e.keyCode;
+        console.log(key);
         if (key == 13) {
             $scope.launch(app);
+        } else if (key == 46) { 
+            $scope.uninstall(app);
         } else if (key >= 37 && key <= 40) {
             var index = $scope.grid.moveOnGrid(appIndex, GRID_MOVES[key]);
             $scope.updateFocusedApp(index);

@@ -61,19 +61,35 @@ launcherDirectives.directive('htmlSortable', [
   }
 ]);
 
-launcherDirectives.directive('focusMe', function ($timeout) {
-    return {
-        scope: {
-            trigger: '@focusMe'
-        },
-        link: function (scope, element) {
-            scope.$watch('trigger', function (value) {
-                if (value === 'true') {
-                    $timeout(function () {
-                        element[0].focus();
+launcherDirectives
+    .directive('focusMe', function ($timeout) {
+        return {
+            scope: {
+                trigger: '@focusMe'
+            },
+            link: function (scope, element) {
+                scope.$watch('trigger', function (value) {
+                    if (value === 'true') {
+                        $timeout(function () {
+                            element[0].focus();
+                        });
+                    }
+                });
+            }
+        };
+    })
+    .directive('rightClick', [
+    '$parse',
+    function ($parse) {
+            return function (scope, element, attrs) {
+                var fn = $parse(attrs.rightClick);
+                element.bind('contextmenu', function (event) {
+                    scope.$apply(function () {
+                        event.preventDefault();
+                        fn(scope, {
+                            $event: event
+                        });
                     });
-                }
-            });
-        }
-    };
-});
+                });
+            };
+}]);
