@@ -67,7 +67,7 @@ function AppsController($scope, $q, appsService, iconsService, gridFactory, sett
     }
 
     $scope.getIconUrl = function (app) {
-        return iconsService.getIconUrl(app);
+        return iconsService.getIconUrl(app, $scope.settings.iconSize);
     };
 
     $scope.getBgImageStyle = function (app) {

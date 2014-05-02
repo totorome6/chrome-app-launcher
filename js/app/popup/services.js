@@ -75,18 +75,36 @@ launcherServices
 
         function () {
 
-            var getIconUrl = function (app) {
+            var sizes = {
+              	large: 64,
+                small: 48
+            };
+            
+            var getIconUrl = function (app, type) {
+                
+                var type = type || 'large';
+                
                 var icons = app.icons;
-                var maxIconIdx = 0;
-                var maxSize = icons[0].size;
-                for (var i = 1; i < icons.length; i++) {
-                    if (maxSize < icons[i].size) {
-                        maxIconIdx = i;
-                        maxSize = icons[i].size;
+                icons.sort(function (i1, i2) {
+                   return i1.size - i2.size; 
+                });
+                
+                var result = null;
+                var size = sizes[type];
+                
+                for (var i = 0; i < icons.length; i++) {
+                    var icon  = icons[i];
+                    
+                    if (icon.size == size) {
+                        return icon.url || "";   
+                    }
+                    
+                    if (icon.size > size && (!result || icon.size < result.size)) {
+                      	result = icon;   
                     }
                 }
-
-                return icons[maxIconIdx].url || "";
+                
+                return !result ? "" : result.url;
             };
 
             return {
