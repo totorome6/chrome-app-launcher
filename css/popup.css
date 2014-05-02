@@ -69,6 +69,7 @@ ul.apps-list li {
     margin: auto;
     background-position: center center;
     background-repeat: no-repeat;
+    background-image: url('../images/default.png');
 }
 
 @-webkit-keyframes roll
