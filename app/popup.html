@@ -1,0 +1,49 @@
+<html ng-app='launcher' ng-csp>
+<head>
+    <title>Apps</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- build:css(.tmp) styles/popup.css -->
+    <link rel='stylesheet' href="styles/angular-csp.css" />
+    <link rel='stylesheet' href="styles/popup.css" />
+    <link rel='stylesheet' href="styles/popup-large.css" />
+    <link rel='stylesheet' href="styles/popup-small.css" />
+    <!-- endbuild -->
+    
+</head>
+<body>
+    <div class='main'
+         ng-controller='AppsController'
+         ng-class="{ large: settings.iconSize == 'large', small: settings.iconSize == 'small' }" >
+        
+        <ul  html-sortable="sortableOptions()" ng-model="apps" class="apps-list" >
+            <li class='app-container' ng-repeat='app in apps'>
+                <div class='app card' tabindex='1' 
+                     ng-click='launch(app)' 
+                     ng-keyup='handleKeys($event, $index, app)'
+                     ng-mouseenter='updateFocusedApp($index)'
+                     focus-me='{{ focusedAppIndex == $index }}'
+                     right-click='uninstall(app)' >
+                    <div class='icon' ng-style='getBgImageStyle(app)'></div>
+                    <div class='name'>{{ app.name }}</div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    
+    <!-- build:js(.tmp) scripts/popup.js -->
+    <script type='text/javascript' src='scripts/lib/lodash.min.js'></script>
+    <script type='text/javascript' src='scripts/lib/jquery-1.9.1.min.js'></script>
+    <script type='text/javascript' src='scripts/lib/jquery.sortable.js'></script>
+    <script type='text/javascript' src='scripts/lib/angular.min.js'></script>
+    <script type='text/javascript' src='scripts/app/popup/dependencies.js'></script>
+    <script type='text/javascript' src='scripts/app/common.js'></script>
+    <script type='text/javascript' src='scripts/app/popup/services.js'></script>
+    <script type='text/javascript' src='scripts/app/popup/controllers.js'></script>
+    <script type='text/javascript' src='scripts/app/popup/directives.js'></script>
+    <script type='text/javascript' src='scripts/app/popup/app.js'></script>
+    <!-- endbuild -->
+
+</body>
+</html>
+

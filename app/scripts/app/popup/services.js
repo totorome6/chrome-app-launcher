@@ -1,4 +1,4 @@
-var launcherServices = angular.module('launcher.services', []);
+var launcherServices = angular.module('launcher.services');
 
 launcherServices
     .factory('appsService', ['$q',
@@ -80,9 +80,19 @@ launcherServices
                 small: 48
             };
             
+            var appIconCache = {};
+            
+            var getCacheKey = function (app, type) {
+                return app.id + "_" + type;
+            };
+            
             var getIconUrl = function (app, type) {
                 
                 var type = type || 'large';
+                
+                if (appIconCache.hasOwnProperty(getCacheKey(app, type))) {
+                 	return appIconCache[getCacheKey(app, type)];   
+                }
                 
                 var icons = app.icons;
                 icons.sort(function (i1, i2) {
@@ -104,7 +114,11 @@ launcherServices
                     }
                 }
                 
-                return !result ? "" : result.url;
+                result = !result ? "" : result.url;
+                
+                appIconCache[getCacheKey(app,type)] = result;
+                
+                return result;
             };
 
             return {

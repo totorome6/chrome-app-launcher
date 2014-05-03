@@ -1,4 +1,4 @@
-var common = angular.module('common', []);
+var common = angular.module('launcher.common');
 
 common.service("settingsService", [ 
     '$q', 

@@ -14,12 +14,7 @@ var tryMigrateFromSyncToLocalStorage = function () {
 
 tryMigrateFromSyncToLocalStorage();
 
-var app = angular.module('launcher', [
-    'launcher.services',
-    'launcher.directives',
-    'common'
-]);
-
-app.config(function ($compileProvider) {
+angular.module('launcher')
+.config([ '$compileProvider', function ($compileProvider) {
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|chrome):/);
-});
+}]);
