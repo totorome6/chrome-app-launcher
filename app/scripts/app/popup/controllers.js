@@ -29,40 +29,44 @@ angular.module('launcher').controller(
       $scope.focusedAppIndex = 0;
       $scope.grid = null;
 
-      var loadApps = function () {
+      var reloadApps = function () {
         appsService.loadApps()
         .then(function (apps) {
-          $scope.apps = apps;
-
+            $scope.apps = apps;
         });
       };
 
+      var postLoad = function() {
+        chrome.management.onInstalled.addListener(reloadApps);
+        chrome.management.onUninstalled.addListener(reloadApps);
+        chrome.management.onEnabled.addListener(reloadApps);
+        chrome.management.onDisabled.addListener(reloadApps);
+
+        $scope.$watch('apps', function (o) {
+          appsService.saveOrder($scope.apps);
+
+          if (!$scope.grid){
+            $scope.grid = gridFactory.buildGrid($scope.apps.length, GRID_WIDTHS[$scope.settings.iconSize]);   
+          }
+
+          if ($scope.grid.itemsCount != $scope.apps.length) {
+            $scope.grid.itemsCount = $scope.apps.length;
+          }
+        }, true);  
+      };
+
       var initialize = function () {
-        settingsService.get()
-        .then(function (settings) {
-          $scope.settings = settings;
-        })
-        .then(function () {
-          loadApps();
-        })
-        .then(function(){
-          chrome.management.onInstalled.addListener(loadApps);
-          chrome.management.onUninstalled.addListener(loadApps);
-          chrome.management.onEnabled.addListener(loadApps);
-          chrome.management.onDisabled.addListener(loadApps);
+        $q.all([ settingsService.get(), appsService.loadApps() ])
+          .then(function (results) {
 
-          $scope.$watch('apps', function (o) {
-            appsService.saveOrder($scope.apps);
+            var settings = results[0];
+            var apps = results[1];
 
-            if (!$scope.grid){
-              $scope.grid = gridFactory.buildGrid($scope.apps.length, GRID_WIDTHS[$scope.settings.iconSize]);   
-            }
+            $scope.settings = settings;
+            $scope.apps = apps;
 
-            if ($scope.grid.itemsCount != $scope.apps.length) {
-              $scope.grid.itemsCount = $scope.apps.length;
-            }
-          }, true);  
-        });
+            postLoad();
+          });
       };
 
       $scope.launch = function (app) {
@@ -94,7 +98,7 @@ angular.module('launcher').controller(
 
       $scope.handleKeys = function (e, appIndex, app) {
         var key = e.keyCode;
-        console.log(key);
+
         if (key == 13) {
           $scope.launch(app);
         } else if (key == 46) { 

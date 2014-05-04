@@ -1,5 +1,6 @@
 body {
-    width: 350px;
+  -webkit-backface-visibility: hidden;
+  width: 350px;
 }
 
 @font-face {
@@ -73,10 +74,12 @@ ul.apps-list li {
 @-webkit-keyframes roll
 {
     from { 
+        -webkit-transition: translate3d(0,0,0);
         max-height: 0px; 
         opacity: 0.1;
     }
     to {
+        -webkit-transition: translate3d(0,0,0);
         max-height: 100px; 
         opacity: 1;
     }
