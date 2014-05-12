@@ -1,8 +1,8 @@
 var app = angular.module('options', ['launcher.common']);
 
-app.config(function ($compileProvider) {
+app.config([ '$compileProvider', function ($compileProvider) {
   $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|chrome):/);
-});
+}]);
 
 app.controller('OptionsController',
                [
