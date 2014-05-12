@@ -72,12 +72,12 @@ angular.module('launcher').controller(
       $scope.launch = function (app) {
         chrome.management.launchApp(app.id);
         window.close();
-      }
+      };
 
       $scope.uninstall = function (app) {
         chrome.management.uninstall(app.id, { showConfirmDialog: true });
         window.close();
-      }
+      };
 
       $scope.getIconUrl = function (app) {
         return iconsService.getIconUrl(app, $scope.settings.iconSize);

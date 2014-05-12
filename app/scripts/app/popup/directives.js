@@ -83,13 +83,28 @@ launcherDirectives
   function ($parse) {
     return function (scope, element, attrs) {
       var fn = $parse(attrs.rightClick);
-      element.bind('contextmenu', function (event) {
+      element.bind('mousedown', function (event) {
+
+        if (event.which != 3) {
+          return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+
         scope.$apply(function () {
-          event.preventDefault();
           fn(scope, {
             $event: event
           });
         });
-      });
+
+        return false;
+
+      })
+      .bind('contextmenu', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+      });;
     };
   }]);
