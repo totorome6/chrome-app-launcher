@@ -1,3 +1,4 @@
+(function () {
 'use strict'
 
 var ENTER = 13;
@@ -14,29 +15,77 @@ var GRID_WIDTHS = {
   'small': 5
 };
 
-angular.module('launcher').controller(
-  'AppsController',
-  [ 
-    '$scope', 
-    '$q', 
-    'appsService', 
-    'iconsService', 
-    'gridFactory', 
-    'settingsService',
-    function ($scope, $q, appsService, iconsService, gridFactory, settingsService) {
+angular.module('launcher').controller('AppsController', ['$scope', '$q', 'appsService', 'iconsService', 'gridFactory', 'settingsService', AppsController]);
+
+    function AppsController($scope, $q, appsService, iconsService, gridFactory, settingsService) {
 
       $scope.apps = [];
       $scope.focusedAppIndex = 0;
       $scope.grid = null;
 
-      var reloadApps = function () {
+      $scope.launch = launch;
+      $scope.uninstall = uninstall;
+      $scope.getIconUrl = getIconUrl;
+      $scope.getBgImageStyle = getBgImageStyle;
+      $scope.sortableOptions = sortableOptions;
+      $scope.handleKeys = handleKeys;
+
+      $scope.updateFocusedApp = updateFocusedApp;
+
+      activate();
+
+      function updateFocusedApp(index) {
+        $scope.focusedAppIndex = index;
+      }
+
+      function handleKeys(e, appIndex, app) {
+        var key = e.keyCode;
+
+        if (key == 13) {
+          $scope.launch(app);
+        } else if (key == 46) { 
+          $scope.uninstall(app);
+        } else if (key >= 37 && key <= 40) {
+          var index = $scope.grid.moveOnGrid(appIndex, GRID_MOVES[key]);
+          $scope.updateFocusedApp(index);
+        }
+      }
+
+      function getIconUrl(app) {
+        return iconsService.getIconUrl(app, $scope.settings.iconSize);
+      }
+      
+      function getBgImageStyle (app) {
+        return {
+          'background-image': 'url(' + getIconUrl(app) + ')'
+        };
+      }
+
+      function sortableOptions() {
+        return {
+          items: 'li',
+          placeholder: '<li><div class="app card" ><div class="icon"></div><div class="name"></div></div></li>'
+        };
+      }
+
+      function launch(app) {
+        chrome.management.launchApp(app.id);
+        window.close();
+      }
+      
+      function uninstall(app) {
+        chrome.management.uninstall(app.id, { showConfirmDialog: true });
+        window.close();
+      }
+      
+      function reloadApps() {
         appsService.loadApps()
         .then(function (apps) {
             $scope.apps = apps;
         });
-      };
-
-      var postLoad = function() {
+      }
+      
+      function postLoad() {
         chrome.management.onInstalled.addListener(reloadApps);
         chrome.management.onUninstalled.addListener(reloadApps);
         chrome.management.onEnabled.addListener(reloadApps);
@@ -53,9 +102,9 @@ angular.module('launcher').controller(
             $scope.grid.itemsCount = $scope.apps.length;
           }
         }, true);  
-      };
+      }
 
-      var initialize = function () {
+      function activate() {
         $q.all([ settingsService.get(), appsService.loadApps() ])
           .then(function (results) {
 
@@ -68,51 +117,6 @@ angular.module('launcher').controller(
             postLoad();
           });
       };
+    }
 
-      $scope.launch = function (app) {
-        chrome.management.launchApp(app.id);
-        window.close();
-      };
-
-      $scope.uninstall = function (app) {
-        chrome.management.uninstall(app.id, { showConfirmDialog: true });
-        window.close();
-      };
-
-      $scope.getIconUrl = function (app) {
-        return iconsService.getIconUrl(app, $scope.settings.iconSize);
-      };
-
-      $scope.getBgImageStyle = function (app) {
-        return {
-          'background-image': 'url(' + $scope.getIconUrl(app) + ')'
-        };
-      };
-
-      $scope.sortableOptions = function () {
-        return {
-          items: 'li',
-          placeholder: '<li><div class="app card" ><div class="icon"></div><div class="name"></div></div></li>'
-        };
-      };
-
-      $scope.handleKeys = function (e, appIndex, app) {
-        var key = e.keyCode;
-
-        if (key == 13) {
-          $scope.launch(app);
-        } else if (key == 46) { 
-          $scope.uninstall(app);
-        } else if (key >= 37 && key <= 40) {
-          var index = $scope.grid.moveOnGrid(appIndex, GRID_MOVES[key]);
-          $scope.updateFocusedApp(index);
-        }
-      };
-
-      $scope.updateFocusedApp = function (index) {
-        $scope.focusedAppIndex = index;
-      };
-
-      initialize();
-    }]);
-
+}());

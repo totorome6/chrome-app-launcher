@@ -1,32 +1,32 @@
-var app = angular.module('options', ['launcher.common']);
+(function () {
 
-app.config([ '$compileProvider', function ($compileProvider) {
-  $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|chrome):/);
-}]);
+  angular.module('options', ['launcher.common'])
+  .config(['$compileProvider', configureImgSrcSanitizationWhitelist])
+  .controller('OptionsController', ['$scope', '$timeout', 'settingsService', OptionsController]);
 
-app.controller('OptionsController',
-               [
-                 '$scope', 
-                 '$timeout', 
-                 'settingsService',
-                 function ($scope, $timeout, settingsService) {
+  function configureImgSrcSanitizationWhitelist($compileProvider) {
+    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|chrome):/);
+  }
 
-                   settingsService.get().then(function(settings){
-                     $scope.settings = settings;
-                   });
+  function OptionsController($scope, $timeout, settingsService) {
 
-                   $scope.save = function(){
-                     settingsService
-                     .set($scope.settings)
-                     .then(function(){
-                       $scope.saved = true;
+    settingsService.get().then(function(settings){
+      $scope.settings = settings;
+    });
 
-                       $timeout(function() {
-                         $scope.saved = false;
-                       }, 1000);
-                     });
-                   };
+    $scope.save = function(){
+      settingsService
+      .set($scope.settings)
+      .then(function(){
+        $scope.saved = true;
 
-                   $scope.saved = false;
-                 }
-               ]);
+        $timeout(function() {
+          $scope.saved = false;
+        }, 1000);
+      });
+    };
+
+    $scope.saved = false;
+  }
+
+}());

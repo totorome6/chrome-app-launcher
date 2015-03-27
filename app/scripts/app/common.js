@@ -1,42 +1,46 @@
-var common = angular.module('launcher.common');
+(function() {
 
-common.service("settingsService", [ 
-    '$q', 
-    function ($q) {
+  angular.module('launcher.common').service("settingsService", [ '$q', settingsService ]);
 
-        var SETTINGS_KEY = "settings";
-        var chromeStorage = chrome.storage.local;
+  function settingsService($q) {
 
-        var getDefaultSettings = function () {
-            return {
-                'iconSize': 'large',
-                'searchBar': 'off',
-            };
-        };
+    var SETTINGS_KEY = "settings";
+    var chromeStorage = chrome.storage.local;
 
-        var getSettings = function () {
-            var deferred = $q.defer();
+    return {
+      "get": getSettings,
+      "set": setSettings
+    };
 
-            chromeStorage.get(SETTINGS_KEY, function (response) {
-                deferred.resolve(response[SETTINGS_KEY] || getDefaultSettings());
-            });
+    function getSettings() {
+      var deferred = $q.defer();
 
-            return deferred.promise;
-        };
+      chromeStorage.get(SETTINGS_KEY, function (response) {
+        deferred.resolve(response[SETTINGS_KEY] || getDefaultSettings());
+      });
 
-        var setSettings = function (settings) {
-            var deferred = $q.defer();
-            var storageObject = {};
-            storageObject[SETTINGS_KEY] = settings;
-            chromeStorage.set(storageObject, function () {
-                deferred.resolve(true);
-            });
+      return deferred.promise;
+    };
 
-            return deferred.promise;
-        }
+    function setSettings (settings) {
+      var deferred = $q.defer();
+      var storageObject = {};
 
-        return {
-            "get": getSettings,
-            "set": setSettings
-        };
-}]);
+      storageObject[SETTINGS_KEY] = settings;
+
+      chromeStorage.set(storageObject, function () {
+        deferred.resolve(true);
+      });
+
+      return deferred.promise;
+    }
+
+    function getDefaultSettings() {
+      return {
+        'iconSize': 'large',
+        'searchBar': 'off',
+      };
+    };
+
+  }
+}());

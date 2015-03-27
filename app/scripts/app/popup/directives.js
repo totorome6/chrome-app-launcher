@@ -1,18 +1,11 @@
-/*
- * AngularJS integration with the HTML5 Sortable jQuery Plugin
- * https://github.com/voidberg/html5sortable
- *
- * Copyright 2013, Alexandru Badiu <andu@ctrlz.ro>
- *
- * Thanks to the following contributors: samantp.
- *
- * Released under the MIT license.
- */
-var launcherDirectives = angular.module('launcher.directives');
+(function(){
 
-launcherDirectives.directive('htmlSortable', [
-  '$timeout',
-  function ($timeout) {
+  angular.module('launcher.directives')
+  .directive('htmlSortable', ['$timeout', htmlSortable])
+  .directive('focusMe', [ '$timeout', focusMe ])
+  .directive('rightClick', ['$parse', rightClick]);
+
+  function htmlSortable($timeout) {
     return {
       require: '?ngModel',
       link: function (scope, element, attrs, ngModel) {
@@ -59,28 +52,25 @@ launcherDirectives.directive('htmlSortable', [
       }
     };
   }
-]);
 
-launcherDirectives
-.directive('focusMe', [ '$timeout', function ($timeout) {
-  return {
-    scope: {
-      trigger: '@focusMe'
-    },
-    link: function (scope, element) {
-      scope.$watch('trigger', function (value) {
-        if (value === 'true') {
-          $timeout(function () {
-            element[0].focus();
-          });
-        }
-      });
-    }
-  };
-}])
-.directive('rightClick', [
-  '$parse',
-  function ($parse) {
+  function focusMe($timeout) {
+    return {
+      scope: {
+        trigger: '@focusMe'
+      },
+      link: function (scope, element) {
+        scope.$watch('trigger', function (value) {
+          if (value === 'true') {
+            $timeout(function () {
+              element[0].focus();
+            });
+          }
+        });
+      }
+    };
+  }
+
+  function rightClick($parse) {
     return function (scope, element, attrs) {
       var fn = $parse(attrs.rightClick);
       element.bind('mousedown', function (event) {
@@ -107,4 +97,5 @@ launcherDirectives
         return false;
       });;
     };
-  }]);
+  }
+}());
