@@ -32,7 +32,6 @@ ul.apps-list li {
 .card {
     padding: 0.3em;
     border-radius: 2px;
-    transition: all 200ms ease;
     font-size: small;
     cursor: pointer;
     border: 1px solid #fff;
@@ -40,7 +39,6 @@ ul.apps-list li {
 
 .card:focus {
     outline: none;
-    transition: all 200ms ease;
     border: 1px solid #c9c9c9;
 }
 .app .icon,
