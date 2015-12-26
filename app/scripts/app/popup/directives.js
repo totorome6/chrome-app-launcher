@@ -1,14 +1,13 @@
-(function(){
+'use strict';
 
-  angular.module('launcher.directives')
-  .directive('htmlSortable', ['$timeout', htmlSortable])
-  .directive('focusMe', [ '$timeout', focusMe ])
-  .directive('rightClick', ['$parse', rightClick]);
+(function () {
+
+  angular.module('launcher.directives').directive('htmlSortable', ['$timeout', htmlSortable]).directive('focusMe', ['$timeout', focusMe]).directive('rightClick', ['$parse', rightClick]);
 
   function htmlSortable($timeout) {
     return {
       require: '?ngModel',
-      link: function (scope, element, attrs, ngModel) {
+      link: function link(scope, element, attrs, ngModel) {
         var opts, model;
 
         opts = angular.extend({}, scope.$eval(attrs.htmlSortable));
@@ -58,7 +57,7 @@
       scope: {
         trigger: '@focusMe'
       },
-      link: function (scope, element) {
+      link: function link(scope, element) {
         scope.$watch('trigger', function (value) {
           if (value === 'true') {
             $timeout(function () {
@@ -89,13 +88,12 @@
         });
 
         return false;
-
-      })
-      .bind('contextmenu', function (event) {
+      }).bind('contextmenu', function (event) {
         event.preventDefault();
         event.stopPropagation();
         return false;
       });;
     };
   }
-}());
+})();
+//# sourceMappingURL=directives.js.map

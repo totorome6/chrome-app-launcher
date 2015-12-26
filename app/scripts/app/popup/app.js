@@ -1,8 +1,10 @@
-(function(){
-  angular.module('launcher')
-  .config([ '$compileProvider', configureImgSrcSanitizationWhitelist]);
+"use strict";
 
-  function configureImgSrcSanitizationWhitelist($compileProvider) {
-    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|chrome):/);
-  }
-}());
+(function (window) {
+    var SettingsService = window.common.SettingsService;
+    var AppsService = window.popup.service.AppsService;
+    var AppsLauncher = window.popup.AppsLauncher;
+
+    new AppsLauncher(new AppsService(), new SettingsService()).initialize();
+})(window);
+//# sourceMappingURL=app.js.map
