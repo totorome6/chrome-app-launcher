@@ -1,11 +1,12 @@
-(function (window, chrome, document) {
+(function (window, chrome) {
 
-    const model = window.popup.model,
+    const { $, document } = window,
+    model = window.popup.model,
+    { AppElementBuilder, applyEventListeners } = window.popup.ui,
     APPS_EVENT = model.APPS_EVENT,
     AppsCollection = model.AppsCollection,
-    Grid = model.Grid,
-    { AppElementBuilder, applyEventListeners } = window.popup.ui,
     APPS_LIST_ELEMENT = document.querySelector('.apps-list'),
+    Grid = model.Grid,
     APP_SEL = '.app';
 
     const GRID_WIDTHS = {
@@ -33,7 +34,7 @@
         }
 
         initialize () {
-            Promise.all([ this.settingsService.get(), this.appsService.loadApps() ])
+            Promise.all([ this.settingsService.get(), this.appsService.load() ])
             .then(([ settings, apps ]) => {
                 this.settings = settings;
 
@@ -49,7 +50,7 @@
                 updateGridSizeOnAppsEvents(this.appsGrid, this.apps);
 
                 document.querySelector('.apps-list .app:first-of-type').focus();
-                //todo makeGridSortable(this, APPS_LIST_ELEMENT);
+                makeGridSortable.call(this, APPS_LIST_ELEMENT);
             });
         };
 
@@ -67,6 +68,28 @@
             let appIndex = this.apps.getIndexById(appId);
         }
 
+    }
+
+    function makeGridSortable (appsListElement) {
+        let opts = {
+            items: 'li',
+            placeholder: '<li class="app-container"><div class="app card" ><div class="icon"></div><div class="name"></div></div></li>'
+        };
+
+        $(appsListElement)
+        .sortable(opts)
+        .bind('sortupdate', (e, data) => {
+
+            var oldIndex = data.oldindex;
+            var newIndex = data.item.index();
+
+            if (oldIndex === newIndex) {
+                return;
+            }
+
+            let app = this.apps.getByIndex(oldIndex);
+            this.apps.reorder(app, newIndex);
+        });
     }
 
     function drawAppElements (launcherElement, apps) {
@@ -107,7 +130,7 @@
     }
 
     function reloadApps() {
-        appsService.loadApps()
+        appsService.load()
         .then(function (apps) {
             $scope.apps = apps;
         });

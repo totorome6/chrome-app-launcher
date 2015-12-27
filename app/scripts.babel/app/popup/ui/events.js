@@ -11,7 +11,7 @@
 
     let eventListeners = {
         'keyup': [ updateFocusOnArrowKeys, launchActiveAppOnEnterKey, deleteActiveAppOnDeleteKey ],
-        'mousedown': [ launchActiveAppOnClick, deleteActiveAppOnRightClick ],
+        'click': [ launchActiveAppOnClick, deleteActiveAppOnRightClick ],
         'contextmenu': [ cancelDefaultActionForContextMenu ],
         'mouseover': [ updateFocusOnMouseEnter ],
         'focus': [ changeActiveAppOnFocus ]

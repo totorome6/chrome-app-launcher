@@ -12,19 +12,19 @@
 
     class AppsService {
 
-        saveAppsOrder (apps) {
+        saveOrder (apps) {
             if (!apps || !apps.length) {
                 return;
             }
 
-            var appsOrder = JSON.stringify(apps.map(getId)));
+            var appsOrder = JSON.stringify(apps.map(getId));
 
             chrome.storage.local.set({
                 order: appsOrder
             }, () => {});
         }
 
-        loadApps () {
+        load () {
             return Promise.all([ getAppsOrder(), getApps() ])
             .then(([ orderResponse, apps ]) => {
                 var order = orderResponse.order;

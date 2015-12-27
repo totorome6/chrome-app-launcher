@@ -11,10 +11,10 @@
         on (evntName, listener) {
             let eListeners = this.listeners[evntName];
             if (!eListeners) {
-                this.listeners[evntName] = [];
+                eListeners = this.listeners[evntName] = [];
             }
 
-            this.listeners[evntName] = listener;
+            eListeners.push(listener);
         }
 
         emit (evntName, ...args) {
@@ -23,7 +23,8 @@
                 return;
             }
 
-            this.listeners.forEach(listener => listener.apply(this, args));
+            eListeners
+                .forEach(listener => listener.apply(this, args));
         }
     }
 

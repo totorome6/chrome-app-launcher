@@ -14,13 +14,14 @@
 
         constructor (appsList) {
             super();
-            
+
             this.collection = appsList;
 
             this.mapById = appsList.reduce((result, app) => {
                 result[app.id] = app;
                 return result;
-            });
+            },
+            {});
         }
 
         add (app) {
