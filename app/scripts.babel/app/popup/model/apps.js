@@ -1,7 +1,7 @@
 'use strict';
 
 (function (window) {
-
+    window.kaka = 'kaka!';
     const EventEmitter = window.common.EventEmitter;
 
     const APPS_EVENT = {
@@ -15,13 +15,14 @@
         constructor (appsList) {
             super();
 
-            this.collection = appsList;
+            this.collection = appsList.slice();
 
-            this.mapById = appsList.reduce((result, app) => {
-                result[app.id] = app;
-                return result;
-            },
-            {});
+            this.mapById = this.collection
+                .reduce((result, app) => {
+                    result[app.id] = app;
+                    return result;
+                },
+                {});
         }
 
         add (app) {
@@ -37,10 +38,16 @@
             this.emit(APPS_EVENT.REMOVED, app);
         }
 
-        reorder (app, newIndex) {
-            let idx = this.collection.indexOf(app);
-            this.collection.splice(idx, 1);
-            this.collection.splice(newIndex, 0, app);
+        reorder (app, toIndex) {
+            let arr = this.collection;
+            let fromIndex = arr.indexOf(app);
+            arr.splice(fromIndex, 1);
+            arr.splice(toIndex, 0, app);
+
+            //arr.splice(toIndex, 0, arr.splice(fromIndex, 1)[0]);
+
+            console.log(app.name, `${fromIndex} -> ${toIndex}`);
+
             this.emit(APPS_EVENT.REORDERED);
         }
 

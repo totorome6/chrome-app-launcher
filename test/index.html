@@ -17,9 +17,14 @@
   </script>
   <!-- bower:js -->
   <!-- endbower -->
+
   <!-- include source files here... -->
+  <script src="scripts/app/namespace.js"></script>
+  <script src="scripts/app/common/events.js"></script>
+  <script src="scripts/app/popup/model/apps.js"></script>
+
   <!-- include spec files here... -->
-  <script src="spec/test.js"></script>
+  <script src="spec/model/apps.js"></script>
   <script>
     if (navigator.userAgent.indexOf('PhantomJS') === -1) {
       mocha.run();

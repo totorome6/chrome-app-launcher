@@ -18,10 +18,15 @@
             }
 
             var appsOrder = JSON.stringify(apps.map(getId));
+            console.log('Saved', apps.map(a => a.name));
 
             chrome.storage.local.set({
                 order: appsOrder
-            }, () => {});
+            }, () => {
+                if (chrome.runtime.lastError) {
+                    console.error(chrome.runtime.lastError);
+                }
+            });
         }
 
         load () {
@@ -29,6 +34,7 @@
             .then(([ orderResponse, apps ]) => {
                 var order = orderResponse.order;
                 var orderedApps = composeAppsList(apps, order ? JSON.parse(order) : null);
+                console.log('Loaded', orderedApps.map(a => a.name));
                 return orderedApps;
             })
         };
@@ -50,30 +56,48 @@
 
     function composeAppsList (apps, order) {
         if (!order || !order.length) {
-            return _.sortBy(apps, (x) => x.name);
+            apps = apps.slice();
+            apps.sort(function (a, b) {
+                let aname = a.name,
+                    bname = b.name;
+
+                if (aname > bname) {
+                    return 1
+                } else if (aname === bname) {
+                    return 0;
+                } else {
+                    return -1;
+                }
+            });
+
+            return apps;
         }
 
         var appIds = apps.map(getId);
-        order = order.concat(_.difference(appIds, order));
+        order = order.concat(difference(appIds, order));
 
         var result = new Array(order.length);
         for (var i = 0; i < order.length; i++) {
             var curAppIdx = appIds.indexOf(order[i]);
-            if (curAppIdx == -1) {
+            if (curAppIdx === -1) {
                 continue;
             }
 
             result[i] = apps[curAppIdx];
         }
 
-        return _.compact(result);
+        return result.filter(x => x);
     };
 
-    var getAppsOrder = function () {
+    function getAppsOrder () {
         return new Promise((resolve) => {
             chromeLocalStorage.get('order', (response) => resolve(response));
         });
     };
+
+    function difference(arr1, arr2) {
+        return arr1.filter(i => arr2.indexOf(i) === -1);
+    }
 
     window.popup.service.AppsService = AppsService;
 
