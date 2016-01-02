@@ -23,6 +23,10 @@ ul.apps-list {
     -webkit-padding-start: 0px;
 }
 
+ul.apps-list * {
+    -webkit-user-select: none;
+}
+
 ul.apps-list li {
     margin: 0em;
     display: inline-block;
@@ -57,7 +61,6 @@ ul.apps-list li {
     text-align: center;
     text-overflow: ellipsis;
     overflow: hidden;
-
     white-space: nowrap;
 }
 
@@ -66,4 +69,3 @@ ul.apps-list li {
     background-position: center center;
     background-repeat: no-repeat;
 }
-

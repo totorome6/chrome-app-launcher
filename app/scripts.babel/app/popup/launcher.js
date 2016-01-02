@@ -76,20 +76,43 @@
             placeholder: '<li class="app-container"><div class="app card" ><div class="icon"></div><div class="name"></div></div></li>'
         };
 
-        $(appsListElement)
-        .sortable(opts)
-        .bind('sortupdate', (e, data) => {
+        let currentElement;
 
-            var oldIndex = data.oldindex;
-            var newIndex = data.item.index();
+        Sortable.create(appsListElement, {
+            draggable: 'li.app-container',
+            animation: 150,
 
-            if (oldIndex === newIndex) {
-                return;
+            onEnd: (evnt) => {
+                if (!currentElement || evnt.oldIndex === evnt.newIndex) {
+                    return;
+                }
+
+             let appId = getAppIdFromAppListItem(currentElement);
+             let app = this.apps.getById(appId);
+             this.apps.reorder(app, evnt.newIndex);
+             currentElement = null;
+            },
+
+            onUpdate: (evnt) => {
+                currentElement = evnt.item;
             }
 
-            let app = this.apps.getByIndex(oldIndex);
-            this.apps.reorder(app, newIndex);
         });
+        // $(appsListElement)
+        // .sortable(opts)
+        // .on('sortupdate', (e, data) => {
+        //     if (data.oldindex === data.index) {
+        //         return;
+        //     }
+        //
+        //     let appId = getAppIdFromAppListItem(data.item[0]);
+        //     let app = this.apps.getById(appId);
+        //     this.apps.reorder(app, data.elementIndex);
+        // });
+    }
+
+    function getAppIdFromAppListItem (li) {
+        return li.childNodes[0].dataset.appId;
     }
 
     function drawAppElements (launcherElement, apps) {
@@ -127,13 +150,6 @@
 
         apps.on(APPS_EVENT.ADDED, updateGridSize);
         apps.on(APPS_EVENT.REMOVED, updateGridSize);
-    }
-
-    function reloadApps() {
-        appsService.load()
-        .then(function (apps) {
-            $scope.apps = apps;
-        });
     }
 
     window.popup.AppsLauncher = AppsLauncher;

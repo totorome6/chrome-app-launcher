@@ -1,8 +1,9 @@
 'use strict';
 
 (function (window) {
-    window.kaka = 'kaka!';
     const EventEmitter = window.common.EventEmitter;
+
+    let i = 0;
 
     const APPS_EVENT = {
         ADDED: 'add',
@@ -39,16 +40,26 @@
         }
 
         reorder (app, toIndex) {
+            if (toIndex === undefined ||
+                toIndex === null ||
+                toIndex < 0 ||
+                toIndex > this.collection.length) {
+                throw new Error(`Invalid app reorder toIndex: ${ toIndex }`);
+            }
+
             let arr = this.collection;
             let fromIndex = arr.indexOf(app);
+            if (fromIndex === toIndex) {
+                return;
+            }
+            
             arr.splice(fromIndex, 1);
             arr.splice(toIndex, 0, app);
 
-            //arr.splice(toIndex, 0, arr.splice(fromIndex, 1)[0]);
-
+            console.log("REORDER ?!", ++i);
             console.log(app.name, `${fromIndex} -> ${toIndex}`);
 
-            this.emit(APPS_EVENT.REORDERED);
+            this.emit(APPS_EVENT.REORDERED, app, fromIndex, toIndex);
         }
 
         getByIndex(idx) {
@@ -59,6 +70,10 @@
             return this.collection
                 .map(app => app.id)
                 .indexOf(appId);
+        }
+
+        getById (appId) {
+            return this.mapById[appId];
         }
 
         get length () {
