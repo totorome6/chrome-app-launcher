@@ -2,9 +2,7 @@
   "name": "apps-launcher",
   "private": true,
   "version": "0.0.0",
-  "dependencies": {
-    "lodash": "~3.10.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "chai": "~3.4.2",
     "mocha": "~2.3.4",

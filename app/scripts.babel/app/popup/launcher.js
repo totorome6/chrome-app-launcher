@@ -98,17 +98,6 @@
             }
 
         });
-        // $(appsListElement)
-        // .sortable(opts)
-        // .on('sortupdate', (e, data) => {
-        //     if (data.oldindex === data.index) {
-        //         return;
-        //     }
-        //
-        //     let appId = getAppIdFromAppListItem(data.item[0]);
-        //     let app = this.apps.getById(appId);
-        //     this.apps.reorder(app, data.elementIndex);
-        // });
     }
 
     function getAppIdFromAppListItem (li) {
