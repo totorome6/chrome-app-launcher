@@ -1,8 +1,100 @@
-body {
-    background-color: gray;
+@font-face {
+    font-family: Roboto;
+    src: url('../fonts/Roboto-Regular.ttf')
 }
-body .container {
+@font-face {
+    font-family: RobotoCondensed;
+    src: url('../fonts/RobotoCondensed-Regular.ttf')
+}
+
+body {
+    background-color: #2E72CC;
+    color: #222;
+    padding: 0;
+    margin: 0;
+    font-family: "Roboto" sans-serif;
+}
+
+h1, h2, h3 {
+    font-family: "Roboto" sans-serif;
+}
+
+h3 {
+    color: #555;
+}
+
+h1 {
+    margin-bottom: 50px;
+}
+
+[role=main] {
     height: 100%;
     background-color: white;
     font-size: 130%;
+    width: 65%;
+    min-width: 600px;
+    margin: auto;
+    border-left: 1px solid #eee;
+    border-right: 1px solid #eee;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    padding: 1em;
+}
+
+.buttons {
+    min-height: 50px;
+}
+
+button {
+    font-family: "Roboto" sans-serif;
+    background-color: #222;
+    color: white;
+    padding: 4px 30px;
+    letter-spacing: 1px;
+    font-size: large;
+    text-transform: uppercase;
+    border-radius: 4px;
+    transition-delay: 0.2s;
+}
+
+button.save {
+    background-color: #2E72CC;
+    border: 1px solid #ccc;
+    color: white;
+    position: absolute;
+    right: 20px;
+    font-size: 0.9em;
+}
+
+button.save:active {
+    background-color: white;
+    color: #2E72CC;
+    transition: 0.2s;
+}
+
+.header {}
+
+.header__logo,
+.header__name {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0 10px;
+}
+
+.options {
+    position: relative;
+    width: 50%;
+    min-width: 600px;
+    clear: both;
+}
+
+.option {
+    margin: 1em;
+}
+
+.option__choice {
+    margin: 1em;
+}
+
+.note {
+    margin: 1em;
 }

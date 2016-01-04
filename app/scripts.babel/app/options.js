@@ -16,12 +16,10 @@
 
         setIconSizeRadio(currentSettings);
 
-        let saveOptsButton = document.querySelector('.saveOptions');
+        let saveOptsButton = document.querySelector('.save');
         saveOptsButton.addEventListener('click', () => {
             saveSettings()
-            .then(() => {
-                alert('Saved');
-            });
+            .catch(console.error);
         })
 
 
@@ -34,7 +32,8 @@
     }
 
     function setIconSizeRadio(settings) {
-        let radioSel = `${ ICON_SIZE_RADIO_SEL }[value=${ settings.iconSize || DEFAULT_ICON_SIZE }]`;
+        let size = settings.iconSize || DEFAULT_ICON_SIZE;
+        let radioSel = `${ ICON_SIZE_RADIO_SEL }[value=${ size }]`;
         let radio = document.querySelector(radioSel);
         radio.checked = true;
     }

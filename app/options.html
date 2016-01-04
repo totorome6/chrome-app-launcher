@@ -1,7 +1,6 @@
-<html ng-app='options' ng-csp>
-
+<html>
 <head>
-    <title>Options</title>
+    <title>Apps Launcher - Options</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- build:css styles/options.css -->
@@ -17,39 +16,47 @@
 
 <body>
     <div role="main">
-        <h1>
-            <img style='display: inline-block; max-height: 150px;' src='images/grid64.png' />&nbsp;Apps Launcher
-            <small>Options</small>
-        </h1>
-        <div class="option">
-            <h3>Icon size</h3>
-            <div class="radio">
-                <label>
-                    <i class='glyphicon glyphicon-th-large'></i>
-                    <input type="radio" name='iconSize' value='large' >&nbsp;Make them bigger and add a caption below.
-                </label>
-            </div>
-            <div class="radio">
-                <label>
-                    <i class='glyphicon glyphicon-th'></i>
-                    <input type="radio" name='iconSize' value='small' >&nbsp;I like them smaller with no caption at all.
-                </label>
-            </div>
-        </div>
-        <div class="buttons">
-            <button type='button' class="saveOptions btn btn-primary btn-lg" ng-click='save()' >
-                <i ng-show='saved' class='glyphicon glyphicon-check '></i>&nbsp;Save
-            </button>
-        </div>
-    </div>
-
-        <form role="form" class="form-horizontal">
-            <div class="form-group">
-                <div class="col-md-offset-1 col-md-11">
+        <header>
+            <h1 class="header">
+                <img alt="logo" class="header__logo" style='display: inline-block; max-height: 150px;' src='images/grid64.png' />
+                <span class="header__name">Apps Launcher</span>
+            </h1>
+        </header>
+        <div class="options">
+            <h2>Options</h2>
+            <div class="option">
+                <h3 class="option__name">Icon Size</h3>
+                <div class="option__choice radio">
+                    <label>
+                        <input type="radio" name='iconSize' value='large' >&nbsp;Make them bigger and add a caption below.
+                    </label>
+                </div>
+                <div class="option__choice radio">
+                    <label>
+                        <input type="radio" name='iconSize' value='small' >&nbsp;I like them smaller with no caption at all.
+                    </label>
                 </div>
             </div>
-        </form>
+            <div class="buttons">
+                <button type='button' class="save" >
+                    Save
+                </button>
+            </div>
+        </div>
+        <aside class="notes">
+            <h2>Notes</h2>
+            <div class="note">
+                <h3>More apps</h3>
+                <i class="info__icon"></i>
+                <div class="info_text">
+                    To add new apps to the launcher please visit <a href="https://chrome.google.com/webstore/category/apps">Chrome Webstore</a> and install them in your Chrome Browser.
+                </div>
+            </div>
+        </aside>
+        <div class="buy-me-a-coffee">
+        </div>
     </div>
+</div>
 </body>
 
 </html>
