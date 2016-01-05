@@ -52,12 +52,9 @@
             if (fromIndex === toIndex) {
                 return;
             }
-            
+
             arr.splice(fromIndex, 1);
             arr.splice(toIndex, 0, app);
-
-            console.log("REORDER ?!", ++i);
-            console.log(app.name, `${fromIndex} -> ${toIndex}`);
 
             this.emit(APPS_EVENT.REORDERED, app, fromIndex, toIndex);
         }

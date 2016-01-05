@@ -18,7 +18,6 @@
             }
 
             var appsOrder = JSON.stringify(apps.map(getId));
-            console.log('Saved', apps.map(a => a.name));
 
             chrome.storage.local.set({
                 order: appsOrder
@@ -34,7 +33,6 @@
             .then(([ orderResponse, apps ]) => {
                 var order = orderResponse.order;
                 var orderedApps = composeAppsList(apps, order ? JSON.parse(order) : null);
-                console.log('Loaded', orderedApps.map(a => a.name));
                 return orderedApps;
             })
         };
