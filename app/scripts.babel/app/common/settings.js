@@ -30,6 +30,7 @@
     function getDefaultSettings() {
         return {
             'iconSize': 'large',
+            'launcherIconColor': '#000000',
             'searchBar': 'off',
         };
     };

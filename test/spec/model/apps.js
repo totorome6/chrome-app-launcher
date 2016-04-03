@@ -19,8 +19,6 @@
 
         describe('when reordering', function () {
 
-            var reorderedApp;
-
             APPS_LIST.forEach(function (app, from) {
 
                 APPS_LIST.forEach(function (targetApp, to) {
