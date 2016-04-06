@@ -6,6 +6,7 @@ dist
 app/bower_components
 test/bower_components
 package
-scripts/*.js
-scripts/*.map
+scripts/**/*.js
+scripts/**/*.map
 app/scripts
+app/scripts/**/*.js
