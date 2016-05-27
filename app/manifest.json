@@ -1,43 +1,47 @@
 {
-    "name": "Apps Launcher",
-    "description": "Launch Chrome apps using a fancy popup. Reorder them as you like.",
-    "version": "2.1",
-    "incognito": "split",
-    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
-    "permissions": [
-        "management",
-        "storage"
+  "name": "__MSG_appName__",
+  "version": "2.1.1",
+  "manifest_version": 2,
+  "incognito": "split",
+  "description": "__MSG_appDescription__",
+  "icons": {
+    "16": "images/icon-16.png",
+    "128": "images/icon-128.png"
+  },
+  "default_locale": "en",
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "permissions": [
+    "management",
+    "storage"
+  ],
+  "icons": {
+    "48": "images/grid48.png",
+    "128": "images/grid128.png"
+  },
+  "browser_action": {
+    "default_icon": {
+      "19": "images/icon19.png",
+      "38": "images/icon38.png"
+    },
+    "default_title": "Apps",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "scripts": [
+      "scripts/background.js",
+      "scripts/chromereload.js"
     ],
-    "icons": {
-        "48": "images/grid48.png",
-        "128": "images/grid128.png"
-    },
-    "browser_action": {
-        "default_icon": {
-            "19": "images/icon19.png",
-            "38": "images/icon38.png"
-        },
-        "default_title": "Apps",
-        "default_popup": "popup.html"
-    },
-    "background": {
-        "scripts": [
-            "scripts/app/namespace.js",
-            "scripts/app/common/settings.js",
-            "scripts/app/background/customIconColor.js"
-        ],
-        "persistent": false
-    },
-    "options_page": "options.html",
-    "commands": {
-        "_execute_browser_action": {
-            "suggested_key": {
-                "windows": "Ctrl+Period",
-                "mac": "Command+Period",
-                "chromeos": "Ctrl+Period",
-                "linux": "Ctrl+Period"
-            }
-        }
-    },
-    "manifest_version": 2
+    "persistent": false
+  },
+  "options_page": "options.html",
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "windows": "Ctrl+Period",
+        "mac": "Command+Period",
+        "chromeos": "Ctrl+Period",
+        "linux": "Ctrl+Period"
+      }
+    }
+  }
 }
