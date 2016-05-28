@@ -83,7 +83,7 @@ function updateFocusOnArrowKeys (ev) {
 
 function launchActiveAppOnEnterKey (ev) {
   if (ev.keyCode === ENTER) {
-    this.launch();
+    return this.launch();
   }
 }
 

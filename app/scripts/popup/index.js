@@ -4,4 +4,4 @@ import AppsLauncher from './launcher';
 
 let launcher = new AppsLauncher(new AppsService(), new SettingsService());
 launcher.initialize()
-  .catch(err => console.error(err));
+  .catch(err => console.error(err, err.stack));

@@ -1,10 +1,12 @@
-import { SettingsService } from './common/settings';
+import {
+        SettingsService,
+        DEFAULTS as DEFAULT_SETTINGS,
+        SETTINGS } from './common/settings';
 
-const ICON_SIZE_RADIO_SEL = 'input[name=iconSize]';
-const LAUNCHER_ICON_COLOR_SEL = 'input[name=launcherIconColor]';
-
-const DEFAULT_LAUNCHER_ICON_COLOR = '#000000';
-const DEFAULT_ICON_SIZE = 'large';
+const LAUNCHER_WIDTH_RANGE_SEL = `input[name=${ SETTINGS.LauncherWidth }]`;
+const APPS_PER_ROW_RANGE_SEL = `input[name=${ SETTINGS.AppsPerRow }]`;
+const SHOW_APP_NAMES_CHBOX_SEL = `input[name=${ SETTINGS.ShowAppNames }]`;
+const LAUNCHER_ICON_COLOR_SEL = `input[name=${ SETTINGS.LauncherIconColor }]`;
 
 const document = window.document;
 const service = new SettingsService();
@@ -16,8 +18,7 @@ service.get()
 
     currentSettings = settings;
 
-    setIconSizeRadio(currentSettings);
-    setLauncherIconColor(currentSettings);
+    setupOptionsUI(settings);
 
     let saveOptsButton = document.querySelector('.save');
     saveOptsButton.addEventListener('click', () => {
@@ -30,6 +31,21 @@ service.get()
             });
         });
     });
+
+    Array.from(document.querySelectorAll('input[type=range]'))
+    .forEach(rangeInput => {
+        let output = document.querySelector(`output[name=${rangeInput.name}Output]`);
+        if (!output) {
+            return;
+        }
+
+        let updateOutputVal = () => {
+            output.value = rangeInput.value;
+        };
+
+        rangeInput.addEventListener('input', updateOutputVal);
+        updateOutputVal();
+    });
 });
 
 function saveSettings() {
@@ -38,21 +54,52 @@ function saveSettings() {
     return service.set(currentSettings);
 }
 
-function setIconSizeRadio(settings) {
-    let size = settings.iconSize || DEFAULT_ICON_SIZE;
-    let radioSel = `${ ICON_SIZE_RADIO_SEL }[value=${ size }]`;
-    let radio = document.querySelector(radioSel);
-    radio.checked = true;
+function setupOptionsUI (settings) {
+    setLauncherWidth(settings);
+    setAppsPerRow(settings);
+    setLauncherIconColor(settings);
+    setShowAppNamesChbox(settings);
+}
+
+function getSettingValue (settings, key) {
+    let setting = settings[key];
+    if (typeof setting === 'undefined' ||
+        setting === null) {
+        return DEFAULT_SETTINGS[key];
+    }
+
+    return setting;
+}
+
+function setShowAppNamesChbox (settings) {
+    let chbox = document.querySelector(SHOW_APP_NAMES_CHBOX_SEL);
+    chbox.checked = getSettingValue(settings, SETTINGS.ShowAppNames);
+}
+
+function setAppsPerRow (settings) {
+    document.querySelector(APPS_PER_ROW_RANGE_SEL).value =
+        getSettingValue(settings, SETTINGS.AppsPerRow);
+}
+
+function setLauncherWidth (settings) {
+    document.querySelector(LAUNCHER_WIDTH_RANGE_SEL).value =
+        getSettingValue(settings, SETTINGS.LauncherWidth);
 }
 
 function setLauncherIconColor(settings) {
-    let color = settings.launcherIconColor || DEFAULT_LAUNCHER_ICON_COLOR;
+    let color = getSettingValue(settings, SETTINGS.LauncherIconColor);
     document.querySelector(LAUNCHER_ICON_COLOR_SEL).value = color;
 }
 
 function getDirtySettings() {
     let settings = {};
-    settings.iconSize = document.querySelector(`${ ICON_SIZE_RADIO_SEL }:checked`).value;
-    settings.launcherIconColor = document.querySelector(LAUNCHER_ICON_COLOR_SEL).value;
+    settings[SETTINGS.ShowAppNames] =
+        document.querySelector(`${ SHOW_APP_NAMES_CHBOX_SEL }`).checked;
+    settings[SETTINGS.LauncherIconColor] =
+        document.querySelector(LAUNCHER_ICON_COLOR_SEL).value;
+    settings[SETTINGS.LauncherWidth] =
+        parseInt(document.querySelector(LAUNCHER_WIDTH_RANGE_SEL).value);
+    settings[SETTINGS.AppsPerRow] =
+        parseInt(document.querySelector(APPS_PER_ROW_RANGE_SEL).value);
     return settings;
 }

@@ -1,6 +1,99 @@
+:root {
+    --launcherPadding: 10px;
+    --launcherWidth: 350px;
+    --appsPerRow: 3;
+    /* --launcherPaneWidth: (var(--launcherWidth) - (2 * var(--launcherPadding))); */
+    --launcherPaneWidth: (var(--launcherWidth)); 
+    --itemWidth: (var(--launcherPaneWidth) / var(--appsPerRow));
+    --itemNameHeight: (0.3 * var(--itemWidth));
+}
+
 body {
-  width: 350px;
-  color: #404040;
+    margin: 0;
+    color: #404040;
+    width: var(--launcherWidth);
+    padding: var(--launcherPadding);
+}
+
+ul.apps-list {
+    display: flex;
+    align-content: flex-start;
+    flex-wrap: wrap;
+    list-style-type: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+    -webkit-margin-start: 0;
+    -webkit-margin-end: 0;
+    -webkit-padding-start: 0;
+}
+
+ul.apps-list * {
+    -webkit-user-select: none;
+}
+
+ul.apps-list li {
+    display: block;
+    flex: none;
+    width: calc(var(--itemWidth));
+    height: calc(var(--itemWidth));
+    margin: 0em;
+}
+
+.app {
+    position: relative;
+    height: 100%;
+    border-radius: 2px;
+    cursor: pointer;
+    border: 1px solid #fff;
+}
+
+.app:focus {
+    outline: none;
+    border: 1px solid #c9c9c9;
+}
+
+.app_content {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.app_icon-wrap,
+.app_name {
+    margin: 0 auto;
+}
+
+.app_icon-wrap {
+    position: relative;
+    padding: 0.1em;
+    width: calc(var(--itemWidth));
+    height: calc(var(--itemWidth) - var(--itemNameHeight));
+}
+
+.app_icon {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.app_name {
+    padding: 0.3em;
+    font-size: 0.8rem;
+    font-family: Roboto;
+    text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.hideAppNames .app .app_name {
+    display: none;
 }
 
 @font-face {
@@ -10,62 +103,4 @@ body {
 @font-face {
     font-family: RobotoCondensed;
     src: url('../fonts/RobotoCondensed-Regular.ttf')
-}
-
-ul.apps-list {
-    list-style-type: none;
-    width: auto;
-    margin: 0;
-    -webkit-margin-before: 0.2em;
-    -webkit-margin-after: 0.2em;
-    -webkit-margin-start: 0px;
-    -webkit-margin-end: 0px;
-    -webkit-padding-start: 0px;
-}
-
-ul.apps-list * {
-    -webkit-user-select: none;
-}
-
-ul.apps-list li {
-    margin: 0em;
-    display: inline-block;
-    padding: 0.2em;
-}
-
-.card {
-    padding: 0.3em;
-    border-radius: 2px;
-    font-size: small;
-    cursor: pointer;
-    border: 1px solid #fff;
-}
-
-.card:focus {
-    outline: none;
-    border: 1px solid #c9c9c9;
-}
-.app .icon,
-.app .name {
-    margin: 0 auto;
-}
-
-.app .icon {
-    display: block;
-}
-
-.app .name {
-    margin: 0.3em auto;
-    padding: 0.2em;
-    font-family: Roboto;
-    text-align: center;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-.icon {
-    margin: auto;
-    background-position: center center;
-    background-repeat: no-repeat;
 }

@@ -1,15 +1,11 @@
 import { APPS_EVENT, AppsCollection, Grid } from './model';
+import { SETTINGS } from '../common/settings';
 import Sortable from 'sortablejs';
 import {
   AppElementBuilder,
   applyEventListeners } from './ui';
 
 const APPS_LIST_ELEMENT = document.querySelector('.apps-list');
-
-const GRID_WIDTHS = {
-  LARGE: 3,
-  SMALL: 5
-};
 
 const chromeManagement = chrome.management;
 
@@ -30,12 +26,10 @@ export default class AppsLauncher {
     .then(([ settings, apps ]) => {
       this.settings = settings;
 
-      setTheme(settings);
+      applySettings(settings);
 
       this.apps = new AppsCollection(apps);
-
-      let gridWidth = GRID_WIDTHS[(settings.iconSize || 'large').toUpperCase()];
-      this.appsGrid = new Grid(this.apps.length, gridWidth);
+      this.appsGrid = new Grid(this.apps.length, settings[SETTINGS.AppsPerRow]);
 
       drawAppElements.call(this, APPS_LIST_ELEMENT, this.apps.list());
       saveOrderOnAppsEvents(this.appsService, this.apps);
@@ -67,7 +61,7 @@ function makeGridSortable (appsListElement) {
   let currentElement;
 
   Sortable.create(appsListElement, {
-    draggable: 'li.app-container',
+    draggable: 'li',
     animation: 150,
 
     onEnd: (evnt) => {
@@ -95,11 +89,8 @@ function getAppIdFromAppListItem (li) {
 function drawAppElements (launcherElement, apps) {
   apps.forEach(app => {
     let appsListItem = document.createElement('li');
-    appsListItem.className = 'app-container';
 
-    let appElement = AppElementBuilder.create(app)
-    .withIconSize(this.settings.iconSize)
-    .build();
+    let appElement = AppElementBuilder.create(app).build();
 
     applyEventListeners(appElement, this);
 
@@ -108,8 +99,21 @@ function drawAppElements (launcherElement, apps) {
   });
 }
 
-function setTheme(settings) {
-  window.document.documentElement.className += settings.iconSize;
+function applySettings (settings) {
+    let classes = [];
+
+    if (!settings[SETTINGS.ShowAppNames]) {
+        classes.push('hideAppNames');
+    }
+
+    window.document.documentElement.className += ' ' + classes.join(' ');
+
+    let launcherWidth = settings[SETTINGS.LauncherWidth];
+    document.documentElement.style.setProperty('--launcherWidth', `${launcherWidth}px`);
+
+    let appsPerRow = settings[SETTINGS.AppsPerRow];
+    document.documentElement.style.setProperty('--appsPerRow', appsPerRow);
+
 }
 
 function saveOrderOnAppsEvents (appsService, apps) {
