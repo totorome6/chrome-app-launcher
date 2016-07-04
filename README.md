@@ -9,7 +9,8 @@
 - drag'n'drop apps reordering
 - keyboard navigation - arrows + enter to launch + delete to uninstall
 - icon color customization
-- choose between large and small icons
+- set launcher width and apps per row number
+- app labels on and off
 
 ## Install
 
