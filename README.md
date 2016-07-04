@@ -17,7 +17,7 @@ From [Chrome WebStore](https://chrome.google.com/webstore/detail/apps-launcher/i
 
 ## Place it on the desktop
 
-I don't know whether it's a bug or feature in Chrome, however @brandoncomputer found a way to launch Chrome extension's window like a standalone app (#19). To do so one needs to run Chrome with `--app` switch like this:
+I don't know whether it's a bug or feature in Chrome, however @brandoncomputer found a way to launch Chrome extension's window like a standalone app [#49](https://github.com/gregolsky/chrome-app-launcher/issues/49). To do so one needs to run Chrome with `--app` switch like this:
 
 `/path/to/google-chrome --app="chrome-extension://ijmgkhchjindcjamnckoiahagecjnkdc/popup.html"`
 
