@@ -17,7 +17,7 @@ export class AppElementBuilder {
         result.className = 'app';
         result.setAttribute('tabindex', '1');
         result.innerHTML = '<div class="app_content">' +
-            `<div class="app_icon-wrap"><img class="app_icon" src="${ iconUrl }"/></div>` +
+            `<div class="app_icon" style="background-image: url('${ iconUrl }')" ></div>` +
             `<div class="app_name">${ app.name }</div>` +
             '</div>';
         result.dataset.appId = app.id;

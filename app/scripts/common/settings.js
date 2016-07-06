@@ -6,7 +6,8 @@ export const SETTINGS = {
     LauncherWidth: 'launcherWidth',
     AppsPerRow: 'appsPerRow',
     SearchBar: 'searchBar',
-    Version: 'version'
+    Version: 'version',
+    AppIconPadding: 'appIconPadding'
 };
 
 export const LEGACY_SETTINGS = {
@@ -16,40 +17,44 @@ export const LEGACY_SETTINGS = {
 const chromeStorage = chrome.storage.local;
 
 export const DEFAULTS = {
-  [SETTINGS.ShowAppNames]: true,
-  [SETTINGS.LauncherIconColor]: '#000000',
-  [SETTINGS.LauncherWidth]: 350,
-  [SETTINGS.AppsPerRow]: 3
+    [SETTINGS.ShowAppNames]: true,
+    [SETTINGS.LauncherIconColor]: '#000000',
+    [SETTINGS.LauncherWidth]: 350,
+    [SETTINGS.AppsPerRow]: 3,
+    [SETTINGS.AppIconPadding]: 5
 };
+
+const CURRENT_VERSION = require('../../manifest.json').version;
 
 export class SettingsService {
 
-  get () {
-    return new Promise((resolve) =>
-        chromeStorage.get(SETTINGS_KEY,
-            response => resolve(response[SETTINGS_KEY])))
-    .then(settings => settings || DEFAULTS)
-    .then(settings => {
-        for (let prop in DEFAULTS) {
-            if (typeof settings[prop] === 'undefined') {
-                settings[prop] = DEFAULTS[prop];
-            }
-        }
+    get() {
+        return new Promise((resolve) =>
+                chromeStorage.get(SETTINGS_KEY,
+                    response => resolve(response[SETTINGS_KEY])))
+            .then(settings => settings || DEFAULTS)
+            .then(settings => {
+                for (let prop in DEFAULTS) {
+                    if (typeof settings[prop] === 'undefined') {
+                        settings[prop] = DEFAULTS[prop];
+                    }
+                }
 
-        return settings;
-    })
-    .then(migrateSettings220);
-  }
+                return settings;
+            })
+            .then(migrateSettings220);
+    }
 
-  set (settings) {
-    let storageObject = {
-        [SETTINGS_KEY]: settings
-    };
-    return new Promise((resolve) => chromeStorage.set(storageObject, () => resolve(true)));
-  }
+    set(settings) {
+        settings[SETTINGS.Version] = CURRENT_VERSION;
+        let storageObject = {
+            [SETTINGS_KEY]: settings
+        };
+        return new Promise((resolve) => chromeStorage.set(storageObject, () => resolve(true)));
+    }
 }
 
-function migrateSettings220 (currentSettings) {
+function migrateSettings220(currentSettings) {
     if (currentSettings[SETTINGS.Version] &&
         !currentSettings[LEGACY_SETTINGS.IconSize]) {
         return currentSettings;
@@ -68,8 +73,8 @@ function migrateSettings220 (currentSettings) {
     };
 
     let result = iconSizeDefaults(currentSettings[LEGACY_SETTINGS.IconSize]);
-    let launcherIconColor = currentSettings[SETTINGS.LauncherIconColor]
-            || DEFAULTS[SETTINGS.LauncherIconColor];
+    let launcherIconColor = currentSettings[SETTINGS.LauncherIconColor] ||
+        DEFAULTS[SETTINGS.LauncherIconColor];
 
     return Object.assign(result, {
         [SETTINGS.LauncherIconColor]: launcherIconColor,
