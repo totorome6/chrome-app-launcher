@@ -2,10 +2,15 @@
     --launcherPadding: 10px;
     --launcherWidth: 350px;
     --appsPerRow: 3;
-    /* --launcherPaneWidth: (var(--launcherWidth) - (2 * var(--launcherPadding))); */
-    --launcherPaneWidth: (var(--launcherWidth)); 
+    --appIconPadding: 5;
+    --launcherPaneWidth: (var(--launcherWidth) - (2 * var(--launcherPadding)));
+    /*--launcherPaneWidth: (var(--launcherWidth));*/
     --itemWidth: (var(--launcherPaneWidth) / var(--appsPerRow));
     --itemNameHeight: (0.3 * var(--itemWidth));
+}
+
+* {
+    box-sizing: border-box;
 }
 
 body {
@@ -63,23 +68,21 @@ ul.apps-list li {
     transform: translate(-50%, -50%);
 }
 
-.app_icon-wrap,
 .app_name {
     margin: 0 auto;
 }
 
-.app_icon-wrap {
-    position: relative;
-    padding: 0.1em;
-    width: calc(var(--itemWidth));
-    height: calc(var(--itemWidth) - var(--itemNameHeight));
-}
-
 .app_icon {
     display: block;
-    margin: 0 auto;
-    max-width: 100%;
-    max-height: 100%;
+    margin: 0;
+    padding: calc(var(--appIconPadding) * 1px);
+    position: relative;
+    width: calc(var(--itemWidth));
+    height: calc(var(--itemWidth) - var(--itemNameHeight));
+    background-position: center center;
+    background-origin: content-box;
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 
 .app_name {

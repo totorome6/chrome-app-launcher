@@ -114,6 +114,8 @@ function applySettings (settings) {
     let appsPerRow = settings[SETTINGS.AppsPerRow];
     document.documentElement.style.setProperty('--appsPerRow', appsPerRow);
 
+    let appIconPadding = settings[SETTINGS.AppIconPadding];
+    document.documentElement.style.setProperty('--appIconPadding', appIconPadding);
 }
 
 function saveOrderOnAppsEvents (appsService, apps) {

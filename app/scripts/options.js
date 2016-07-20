@@ -7,6 +7,7 @@ const LAUNCHER_WIDTH_RANGE_SEL = `input[name=${ SETTINGS.LauncherWidth }]`;
 const APPS_PER_ROW_RANGE_SEL = `input[name=${ SETTINGS.AppsPerRow }]`;
 const SHOW_APP_NAMES_CHBOX_SEL = `input[name=${ SETTINGS.ShowAppNames }]`;
 const LAUNCHER_ICON_COLOR_SEL = `input[name=${ SETTINGS.LauncherIconColor }]`;
+const APP_ICON_PADDING_SEL = `input[name=${ SETTINGS.AppIconPadding }]`;
 
 const document = window.document;
 const service = new SettingsService();
@@ -59,6 +60,7 @@ function setupOptionsUI (settings) {
     setAppsPerRow(settings);
     setLauncherIconColor(settings);
     setShowAppNamesChbox(settings);
+    setAppIconPadding(settings);
 }
 
 function getSettingValue (settings, key) {
@@ -91,15 +93,22 @@ function setLauncherIconColor(settings) {
     document.querySelector(LAUNCHER_ICON_COLOR_SEL).value = color;
 }
 
+function setAppIconPadding(settings) {
+    document.querySelector(APP_ICON_PADDING_SEL).value =
+        getSettingValue(settings, SETTINGS.AppIconPadding);
+}
+
 function getDirtySettings() {
     let settings = {};
     settings[SETTINGS.ShowAppNames] =
-        document.querySelector(`${ SHOW_APP_NAMES_CHBOX_SEL }`).checked;
+        document.querySelector(SHOW_APP_NAMES_CHBOX_SEL).checked;
     settings[SETTINGS.LauncherIconColor] =
         document.querySelector(LAUNCHER_ICON_COLOR_SEL).value;
     settings[SETTINGS.LauncherWidth] =
         parseInt(document.querySelector(LAUNCHER_WIDTH_RANGE_SEL).value);
     settings[SETTINGS.AppsPerRow] =
         parseInt(document.querySelector(APPS_PER_ROW_RANGE_SEL).value);
+    settings[SETTINGS.AppIconPadding] =
+        parseInt(document.querySelector(APP_ICON_PADDING_SEL).value);
     return settings;
 }

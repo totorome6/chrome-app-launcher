@@ -22,7 +22,7 @@
                 <div class="option__range">
                     <label>
                         <input type="range" name="launcherWidth" min="300" max="700" step="50" />
-                        &nbsp; <output name="launcherWidthOutput" class="option__range__value" />
+                        &nbsp; <output name="launcherWidthOutput" class="option__range__value" ></output> px
                     </label>
                 </div>
             </div>
@@ -32,6 +32,15 @@
                     <label>
                         <input type="range" name="appsPerRow" min="3" max="8" step="1" />
                         &nbsp; <output name="appsPerRowOutput" class="option__range__value"></output>
+                    </label>
+                </div>
+            </div>
+            <div class="option">
+                <h3 class="option__name">App icon padding</h3>
+                <div class="option__range">
+                    <label>
+                        <input type="range" name="appIconPadding" min="0" max="15" step="1" />
+                        &nbsp; <output name="appIconPaddingOutput" class="option__range__value"></output> px
                     </label>
                 </div>
             </div>
@@ -82,7 +91,7 @@
 </div>
 
     <script type='text/javascript' src='scripts/options.js'></script>
-    
+
 </body>
 
 </html>
