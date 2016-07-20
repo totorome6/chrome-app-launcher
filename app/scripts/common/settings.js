@@ -16,15 +16,16 @@ export const LEGACY_SETTINGS = {
 
 const chromeStorage = chrome.storage.local;
 
+const CURRENT_VERSION = require('../../manifest.json').version;
+
 export const DEFAULTS = {
     [SETTINGS.ShowAppNames]: true,
     [SETTINGS.LauncherIconColor]: '#000000',
     [SETTINGS.LauncherWidth]: 350,
     [SETTINGS.AppsPerRow]: 3,
-    [SETTINGS.AppIconPadding]: 5
+    [SETTINGS.AppIconPadding]: 5,
+    [SETTINGS.Version]: CURRENT_VERSION
 };
-
-const CURRENT_VERSION = require('../../manifest.json').version;
 
 export class SettingsService {
 
@@ -55,8 +56,7 @@ export class SettingsService {
 }
 
 function migrateSettings220(currentSettings) {
-    if (currentSettings[SETTINGS.Version] &&
-        !currentSettings[LEGACY_SETTINGS.IconSize]) {
+    if (currentSettings[SETTINGS.Version] >= '2.2.0') {
         return currentSettings;
     }
 
@@ -73,12 +73,9 @@ function migrateSettings220(currentSettings) {
     };
 
     let result = iconSizeDefaults(currentSettings[LEGACY_SETTINGS.IconSize]);
-    let launcherIconColor = currentSettings[SETTINGS.LauncherIconColor] ||
-        DEFAULTS[SETTINGS.LauncherIconColor];
 
     return Object.assign(result, {
-        [SETTINGS.LauncherIconColor]: launcherIconColor,
-        [SETTINGS.Version]: require('../../manifest.json').version
+        [SETTINGS.LauncherIconColor]: currentSettings[SETTINGS.LauncherIconColor]
     });
 
     function iconSizeDefaults(iconSize) {
