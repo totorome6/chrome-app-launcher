@@ -20,6 +20,7 @@ const CURRENT_VERSION = require('../../manifest.json').version;
 
 export const DEFAULTS = {
     [SETTINGS.ShowAppNames]: true,
+    [SETTINGS.SearchBar]: true,
     [SETTINGS.LauncherIconColor]: '#000000',
     [SETTINGS.LauncherWidth]: 350,
     [SETTINGS.AppsPerRow]: 3,
@@ -42,8 +43,7 @@ export class SettingsService {
                 }
 
                 return settings;
-            })
-            .then(migrateSettings220);
+            });
     }
 
     set(settings) {
@@ -52,37 +52,5 @@ export class SettingsService {
             [SETTINGS_KEY]: settings
         };
         return new Promise((resolve) => chromeStorage.set(storageObject, () => resolve(true)));
-    }
-}
-
-function migrateSettings220(currentSettings) {
-    if (currentSettings[SETTINGS.Version] >= '2.2.0') {
-        return currentSettings;
-    }
-
-    const SMALL_DEFAULTS = {
-        [SETTINGS.ShowAppNames]: false,
-        [SETTINGS.LauncherWidth]: 350,
-        [SETTINGS.AppsPerRow]: 5
-    };
-
-    const LARGE_DEFAULTS = {
-        [SETTINGS.ShowAppNames]: true,
-        [SETTINGS.LauncherWidth]: 350,
-        [SETTINGS.AppsPerRow]: 3
-    };
-
-    let result = iconSizeDefaults(currentSettings[LEGACY_SETTINGS.IconSize]);
-
-    return Object.assign(result, {
-        [SETTINGS.LauncherIconColor]: currentSettings[SETTINGS.LauncherIconColor]
-    });
-
-    function iconSizeDefaults(iconSize) {
-        if (iconSize === 'small') {
-            return SMALL_DEFAULTS;
-        }
-
-        return LARGE_DEFAULTS;
     }
 }

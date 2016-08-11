@@ -7,12 +7,25 @@ const GRID_MOVES = {
   39: 'right'
 };
 
-let eventListeners = {
-  keyup: [ updateFocusOnArrowKeys, launchActiveAppOnEnterKey, deleteActiveAppOnDeleteKey ],
-  mouseup: [ launchActiveAppOnClick, deleteActiveAppOnRightClick ],
-  contextmenu: [ cancelDefaultActionForContextMenu ],
-  mouseover: [ updateFocusOnMouseEnter ],
-  focus: [ changeActiveAppOnFocus ]
+let appEventListeners = {
+  keyup: [
+      updateFocusOnArrowKeys,
+      launchActiveAppOnEnterKey,
+      deleteActiveAppOnDeleteKey
+  ],
+  mouseup: [
+      launchActiveAppOnClick,
+      deleteActiveAppOnRightClick
+  ],
+  contextmenu: [
+      cancelDefaultActionForContextMenu
+  ],
+  mouseover: [
+      updateFocusOnMouseEnter
+  ],
+  focus: [
+      changeActiveAppOnFocus
+  ]
 };
 
 let boundEventListeners;
@@ -33,10 +46,10 @@ export function applyEventListeners(appElement, launcher) {
 }
 
 function bindEventListeners (launcher) {
-  return Object.keys(eventListeners)
+  return Object.keys(appEventListeners)
   .reduce((result, eventName) => {
 
-    result[eventName] = eventListeners[eventName]
+    result[eventName] = appEventListeners[eventName]
     .map(listener => listener.bind(launcher));
 
     return result;
