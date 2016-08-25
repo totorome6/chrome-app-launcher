@@ -6,6 +6,7 @@ import {
 const LAUNCHER_WIDTH_RANGE_SEL = `input[name=${ SETTINGS.LauncherWidth }]`;
 const APPS_PER_ROW_RANGE_SEL = `input[name=${ SETTINGS.AppsPerRow }]`;
 const SHOW_APP_NAMES_CHBOX_SEL = `input[name=${ SETTINGS.ShowAppNames }]`;
+const SEARCH_BAR_CHBOX_SEL = `input[name=${ SETTINGS.SearchBar }]`;
 const LAUNCHER_ICON_COLOR_SEL = `input[name=${ SETTINGS.LauncherIconColor }]`;
 const APP_ICON_PADDING_SEL = `input[name=${ SETTINGS.AppIconPadding }]`;
 
@@ -60,6 +61,7 @@ function setupOptionsUI (settings) {
     setAppsPerRow(settings);
     setLauncherIconColor(settings);
     setShowAppNamesChbox(settings);
+    setSearchBarChbox(settings);
     setAppIconPadding(settings);
 }
 
@@ -76,6 +78,11 @@ function getSettingValue (settings, key) {
 function setShowAppNamesChbox (settings) {
     let chbox = document.querySelector(SHOW_APP_NAMES_CHBOX_SEL);
     chbox.checked = getSettingValue(settings, SETTINGS.ShowAppNames);
+}
+
+function setSearchBarChbox (settings) {
+    let chbox = document.querySelector(SEARCH_BAR_CHBOX_SEL);
+    chbox.checked = getSettingValue(settings, SETTINGS.SearchBar);
 }
 
 function setAppsPerRow (settings) {
@@ -102,6 +109,8 @@ function getDirtySettings() {
     let settings = {};
     settings[SETTINGS.ShowAppNames] =
         document.querySelector(SHOW_APP_NAMES_CHBOX_SEL).checked;
+    settings[SETTINGS.SearchBar] =
+        document.querySelector(SEARCH_BAR_CHBOX_SEL).checked;
     settings[SETTINGS.LauncherIconColor] =
         document.querySelector(LAUNCHER_ICON_COLOR_SEL).value;
     settings[SETTINGS.LauncherWidth] =

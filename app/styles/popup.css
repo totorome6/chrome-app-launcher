@@ -1,3 +1,12 @@
+@font-face {
+    font-family: Roboto;
+    src: url('../fonts/Roboto-Regular.ttf')
+}
+@font-face {
+    font-family: RobotoCondensed;
+    src: url('../fonts/RobotoCondensed-Regular.ttf')
+}
+
 :root {
     --launcherPadding: 10px;
     --launcherWidth: 350px;
@@ -18,6 +27,7 @@ body {
     color: #404040;
     width: var(--launcherWidth);
     padding: var(--launcherPadding);
+    min-height: 110px;
 }
 
 ul.apps-list {
@@ -33,6 +43,17 @@ ul.apps-list {
     -webkit-margin-start: 0;
     -webkit-margin-end: 0;
     -webkit-padding-start: 0;
+}
+
+ul.apps-list:empty:after {
+    display: block;
+    content: 'Sorry, no apps found.';
+    padding: 15px;
+    width: 100%;
+    border: #ccc;
+    font-size: large;
+    text-align: center;
+    clear: both;
 }
 
 ul.apps-list * {
@@ -86,6 +107,7 @@ ul.apps-list li {
 }
 
 .app_name {
+    display: none;
     padding: 0.3em;
     font-size: 0.8rem;
     font-family: Roboto;
@@ -95,15 +117,44 @@ ul.apps-list li {
     white-space: nowrap;
 }
 
-.hideAppNames .app .app_name {
-    display: none;
+.showAppNames .app .app_name {
+    display: block;
 }
 
-@font-face {
-    font-family: Roboto;
-    src: url('../fonts/Roboto-Regular.ttf')
+.hasSearch .search {
+    display: block;
 }
-@font-face {
-    font-family: RobotoCondensed;
-    src: url('../fonts/RobotoCondensed-Regular.ttf')
+
+.hasSearch .apps-list {
+    position: relative;
+    top: 40px;
+}
+
+.search {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 50px;
+    padding: 5px;
+    width: 100%;
+    background-color: #fff;
+}
+
+.search_input {
+    margin: 0 auto;
+    font-family: 'Roboto';
+    font-weight: lighter;
+    display: block;
+    width: 95%;
+    height: 40px;
+    padding: 5px;
+    font-size: 24px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+}
+
+.search_input:focus {
+    outline: none;
+    border-bottom-color: #c9c9c9;
 }
