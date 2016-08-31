@@ -44,9 +44,32 @@ export class AppsCollection extends EventEmitter {
     }
 
     filter (term) {
-        this.filterTerm = term.toUpperCase();
-        this.filtered = this.apps
+        if (!term) {
+            this.filtered = this.collection;
+            this.term = null;
+            this.emit(APPS_EVENT.FILTERED);
+            return;
+        }
+
+        this.filterTerm = term = term.toUpperCase();
+
+        let filtered = this.apps
             .filter(x => x.name.toUpperCase().indexOf(this.filterTerm) !== -1);
+
+        let orderMap = filtered.map((x, i) => ({ index: i, value: x.name.toUpperCase() }));
+        orderMap.sort((a, b) => {
+            let aIdx = a.value.indexOf(term),
+                bIdx = b.value.indexOf(term);
+
+            if (aIdx === bIdx) {
+                return a.value > b.value;
+            }
+
+            return aIdx > bIdx;
+        });
+
+        this.filtered = orderMap.map(el => filtered[el.index]);
+
         this.emit(APPS_EVENT.FILTERED);
     }
 
