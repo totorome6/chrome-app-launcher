@@ -21,6 +21,7 @@ export default class AppsLauncher {
         this.appElementsCache = {};
         this.settings = null;
         this.activeAppId = 0;
+        this.sortableGrid = null;
 
         this.appsListElement = APPS_LIST_ELEMENT;
     }
@@ -83,6 +84,7 @@ export default class AppsLauncher {
     }
 
     filter (term) {
+        this.sortableGrid.option('disabled', !!term);
         this.apps.filter(term);
     }
 
@@ -109,7 +111,7 @@ export default class AppsLauncher {
             currentElement = evnt.item;
         };
 
-        Sortable.create(this.appsListElement, {
+        this.sortableGrid = Sortable.create(this.appsListElement, {
             draggable: 'li',
             animation: 150,
             onEnd,

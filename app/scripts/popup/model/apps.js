@@ -46,7 +46,7 @@ export class AppsCollection extends EventEmitter {
     filter (term) {
         if (!term) {
             this.filtered = this.collection;
-            this.term = null;
+            this.filterTerm = null;
             this.emit(APPS_EVENT.FILTERED);
             return;
         }
