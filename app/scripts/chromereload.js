@@ -1,4 +1,4 @@
-export default function configureLiveReload() {
+function configureLiveReload() {
     const LIVERELOAD_HOST = 'localhost:';
     const LIVERELOAD_PORT = 35729;
     const connection = new WebSocket('ws://' + LIVERELOAD_HOST + LIVERELOAD_PORT + '/livereload');

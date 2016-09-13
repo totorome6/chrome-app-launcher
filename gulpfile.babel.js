@@ -44,9 +44,12 @@ gulp.task('browserify', () => {
     return eventStream.merge(bundleStreams);
 
     function bundle(entrypoint, name) {
-        return browserifyStream(entrypoint, name)
+        return browserify(entrypoint, { debug: true })
+        .transform(babelify)
+        .bundle()
+        .pipe(source(name))
         .pipe(buffer())
-        .pipe(sourcemaps.init({ loadMaps: true }))
+        .pipe(sourcemaps.init({ loadMaps: true, identityMap: true, debug: true }))
         .pipe(uglify())
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('dist/scripts'));
@@ -61,13 +64,6 @@ gulp.task('styles', function () {
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('./dist'));
 });
-
-function browserifyStream(entrypoint, name) {
-    return browserify(entrypoint, { debug: true })
-        .transform(babelify)
-        .bundle()
-        .pipe(source(name));
-}
 
 gulp.task('copy-dev-scripts', () => {
     return gulp.src('app/scripts/chromereload.js')
