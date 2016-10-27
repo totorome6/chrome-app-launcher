@@ -138,6 +138,7 @@ ul.apps-list li {
     height: 50px;
     padding: 5px;
     width: 100%;
+    z-index: 1;
     background-color: #fff;
 }
 
