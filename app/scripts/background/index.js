@@ -1,7 +1,11 @@
+import { SettingsService } from '../common/settings';
 import customizeIconColor from './iconColor';
+import openAsWindow from './openAsWindow';
 
 function registerBackgroundScripts() {
-    customizeIconColor();
+    const settingsService = new SettingsService();
+    customizeIconColor(settingsService);
+    openAsWindow(settingsService);
 }
 
 registerBackgroundScripts();

@@ -12,10 +12,10 @@
     --launcherWidth: 350px;
     --appsPerRow: 3;
     --appIconPadding: 5;
-    --launcherPaneWidth: (var(--launcherWidth) - (2 * var(--launcherPadding)));
+    --launcherPaneWidth: #{"(var(--launcherWidth) - (2 * var(--launcherPadding)))"};
     /*--launcherPaneWidth: (var(--launcherWidth));*/
     --itemWidth: (var(--launcherPaneWidth) / var(--appsPerRow));
-    --itemNameHeight: (0.3 * var(--itemWidth));
+    --itemNameHeight: #{"(0.3 * var(--itemWidth))"};
 }
 
 * {

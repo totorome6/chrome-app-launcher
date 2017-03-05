@@ -1,4 +1,3 @@
-import { SettingsService } from '../../common/settings';
 import { isBlack, hexToRgb } from './utils';
 
 const ICON_SIZE = {
@@ -18,8 +17,6 @@ const ICON_DATA_URL = {
 /* eslint-enable max-len */
 
 const DEFAULT_ICON_COLOR = '#000000';
-
-const settingsService = new SettingsService();
 
 function setIcon (iconData) {
     return new Promise((resolve) => {
@@ -76,7 +73,7 @@ function indexIconsByWidth(icons) {
     }, {});
 }
 
-function updateIcon() {
+function updateIconBasedOnSettings(settingsService) {
     settingsService.get()
     .then(settings => {
         let color = settings.launcherIconColor || DEFAULT_ICON_COLOR;
@@ -91,7 +88,8 @@ function updateIcon() {
     .catch(err => console.error(err));
 }
 
-export default function customizeIconColor() {
+export default function customizeIconColor(settingsService) {
+    const updateIcon = () => updateIconBasedOnSettings(settingsService);
     chrome.runtime.onInstalled.addListener(updateIcon);
     chrome.runtime.onStartup.addListener(updateIcon);
     chrome.runtime.onMessage.addListener(updateIcon);

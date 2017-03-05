@@ -10,6 +10,9 @@ import source from 'vinyl-source-stream';
 import eventStream from 'event-stream';
 import * as fs from 'fs';
 
+import uglifyjs from 'uglify-js';
+import minifier from 'gulp-uglify/minifier';
+
 const $ = gulpLoadPlugins();
 const {
     sourcemaps,
@@ -17,7 +20,6 @@ const {
     cache,
     useref,
     imagemin,
-    uglify,
     mocha,
     sass,
     cleanCss
@@ -45,12 +47,16 @@ gulp.task('browserify', () => {
 
     function bundle(entrypoint, name) {
         return browserify(entrypoint, { debug: true })
+        .on('error', function(err) {
+            console.log(err.message, err.stack);
+            this.emit('end');
+        })
         .transform(babelify)
         .bundle()
         .pipe(source(name))
         .pipe(buffer())
         .pipe(sourcemaps.init({ loadMaps: true, identityMap: true, debug: true }))
-        .pipe(uglify())
+        .pipe(minifier({}, uglifyjs))
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('dist/scripts'));
     }
@@ -104,7 +110,7 @@ gulp.task('images', () => {
         svgoPlugins: [{cleanupIDs: false}]
     }))
     .on('error', function (err) {
-        console.log(err);
+        console.log(err.message, err.stack);
         this.end();
     })))
     .pipe(gulp.dest('dist/images'));
