@@ -1,3 +1,4 @@
+import { SETTINGS } from '../../common/settings';
 
 export default function initializeOpenAsWindow(settingsService) {
     chrome.commands.onCommand.addListener((command) => {
@@ -5,13 +6,16 @@ export default function initializeOpenAsWindow(settingsService) {
             return;
         }
 
-        const opts = {
-            url: 'popup.html',
-            width: 400,
-            height: 600,
-            type: 'popup'
-        };
+        settingsService.get()
+            .then(settings => {
+                const opts = {
+                    url: 'popup.html',
+                    width: settings[SETTINGS.LauncherWidth],
+                    type: 'popup'
+                };
 
-        chrome.windows.create(opts);
+                return new Promise(resolve => chrome.windows.create(opts, resolve));
+            });
+
     });
 }
