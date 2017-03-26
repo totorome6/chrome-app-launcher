@@ -74,12 +74,18 @@ ul.apps-list li {
     border-radius: 2px;
     cursor: pointer;
     border: 1px solid #fff;
+
+    &:hover {
+        background-color: #eee;
+    }
+
+    &:focus {
+        outline: none;
+        border: 1px solid #c9c9c9;
+        background-color: #eee;
+    }
 }
 
-.app:focus {
-    outline: none;
-    border: 1px solid #c9c9c9;
-}
 
 .app_content {
     position: absolute;

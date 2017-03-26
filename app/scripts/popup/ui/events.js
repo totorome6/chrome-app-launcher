@@ -20,9 +20,6 @@ let appEventListeners = {
   contextmenu: [
       cancelDefaultActionForContextMenu
   ],
-  mouseover: [
-      updateFocusOnMouseEnter
-  ],
   focus: [
       changeActiveAppOnFocus
   ]
@@ -55,12 +52,6 @@ function bindEventListeners (launcher) {
     return result;
   },
   {});
-}
-
-function updateFocusOnMouseEnter (ev) {
-  let appElement = ev.currentTarget;
-  this.updateActiveApp(appElement.dataset.appId);
-  appElement.focus();
 }
 
 function changeActiveAppOnFocus (ev) {
