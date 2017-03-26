@@ -145,6 +145,14 @@ export default class AppsLauncher {
                 return;
             }
 
+            if (e.keyCode === 40) {
+                // this.updateActiveApp(this.apps.filtered[0].id);
+                let appEl = document.querySelector('.apps-list .app');
+                appEl.focus();
+                return appEl.offsetHeight;
+                // force redraw element
+            }
+
             this.filter(term);
         });
     }

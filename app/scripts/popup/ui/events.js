@@ -1,5 +1,7 @@
 const ENTER = 13;
 const DELETE = 46;
+const ARROW_DOWN = 40;
+const ARROW_LEFT = 37;
 const GRID_MOVES = {
   38: 'up',
   40: 'down',
@@ -77,7 +79,7 @@ function updateFocusOnArrowKeys (ev) {
   let key = ev.keyCode,
   el = ev.currentTarget;
 
-  if (key >= 37 && key <= 40) {
+  if (key >= ARROW_LEFT && key <= ARROW_DOWN) {
     let appId = el.dataset.appId;
     let currentIndex = this.apps.getIndexById(appId);
     let targetIndex = this.appsGrid.moveOnGrid(currentIndex, GRID_MOVES[key]);
