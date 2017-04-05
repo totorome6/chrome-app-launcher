@@ -139,7 +139,7 @@ export default class AppsLauncher {
 
         searchInput.addEventListener('keyup', e => {
             let term = searchInput.value;
-            if (e.keyCode === 13 && term && this.apps.filtered.length) {
+            if (e.keyCode === 13 && this.apps.filtered.length) {
                 this.updateActiveApp(this.apps.filtered[0].id);
                 this.launch();
                 return;

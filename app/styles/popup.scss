@@ -146,22 +146,43 @@ ul.apps-list li {
     width: 100%;
     z-index: 1;
     background-color: #fff;
-}
 
-.search_input {
-    margin: 0 auto;
-    font-family: 'Roboto';
-    font-weight: lighter;
-    display: block;
-    width: 95%;
-    height: 40px;
-    padding: 5px;
-    font-size: 24px;
-    border: none;
-    border-bottom: 1px solid #ccc;
-}
+    .hint {
+        opacity: 0;
+        pointer-events: none;
+    }
 
-.search_input:focus {
-    outline: none;
-    border-bottom-color: #c9c9c9;
+    .search_input {
+        margin: 0 auto;
+        font-family: 'Roboto';
+        font-weight: lighter;
+        display: block;
+        width: 95%;
+        height: 40px;
+        padding: 5px;
+        font-size: 18px;
+        border: none;
+        border-bottom: 1px solid #ccc;
+
+        &:focus {
+            outline: none;
+            border-bottom-color: #c9c9c9;
+
+        }
+
+        &:focus + .hint {
+            display: block;
+            position: absolute;
+            content: '';
+            padding: 10px;
+            bottom: 0;
+            right: 0;
+            color: gray;
+            font-size: 10px;
+            margin-right: 15px;
+            transition: opacity 0.3s;
+            opacity: 1;
+        }
+    }
+
 }
