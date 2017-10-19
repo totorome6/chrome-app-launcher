@@ -1,13 +1,13 @@
 {
   "name": "chrome-apps-launcher",
-  "version": "2.4.9",
+  "version": "2.4.10",
   "private": true,
   "engines": {
     "node": ">=5.9.0"
   },
   "devDependencies": {
     "babel-cli": "^6.23.0",
-    "babel-preset-env": "^1.1.11",
+    "babel-preset-env": "^1.6.1",
     "babel-register": "^6.9.0",
     "babelify": "^7.3.0",
     "browserify": "^14.1.0",
@@ -30,12 +30,12 @@
     "gulp-sass": "^3.1.0",
     "gulp-size": "^2.1.0",
     "gulp-sourcemaps": "^2.4.1",
-    "gulp-uglify": "^2.0.1",
-    "uglify-js": "git+https://github.com/mishoo/UglifyJS2.git#harmony",
+    "gulp-uglifyes": "^0.1.2",
     "gulp-useref": "^3.0.8",
     "gulp-zip": "^4.0.0",
     "main-bower-files": "^2.11.1",
     "mocha": "^3.2.0",
+    "pump": "^1.0.2",
     "run-sequence": "^1.1.5",
     "sinon": "^1.17.4",
     "vinyl-buffer": "^1.0.0",
@@ -43,6 +43,6 @@
     "wiredep": "^4.0.0"
   },
   "dependencies": {
-    "sortablejs": "^1.4.2"
+    "sortablejs": "git+git@github.com:RubaXa/Sortable.git"
   }
 }

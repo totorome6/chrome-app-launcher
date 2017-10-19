@@ -1,4 +1,5 @@
 import gulp from 'gulp';
+import gutil from 'gulp-util';
 import gulpLoadPlugins from 'gulp-load-plugins';
 import del from 'del';
 import runSequence from 'run-sequence';
@@ -8,10 +9,8 @@ import babelify from 'babelify';
 import buffer from 'vinyl-buffer';
 import source from 'vinyl-source-stream';
 import eventStream from 'event-stream';
+import pump from 'pump';
 import * as fs from 'fs';
-
-import uglifyjs from 'uglify-js';
-import minifier from 'gulp-uglify/minifier';
 
 const $ = gulpLoadPlugins();
 const {
@@ -22,7 +21,8 @@ const {
     imagemin,
     mocha,
     sass,
-    cleanCss
+    cleanCss,
+    uglifyes
 } = $;
 
 gulp.task('test', () => {
@@ -47,16 +47,16 @@ gulp.task('browserify', () => {
 
     function bundle(entrypoint, name) {
         return browserify(entrypoint, { debug: true })
-        .on('error', function(err) {
-            console.log(err.message, err.stack);
-            this.emit('end');
-        })
         .transform(babelify)
         .bundle()
         .pipe(source(name))
         .pipe(buffer())
-        .pipe(sourcemaps.init({ loadMaps: true, identityMap: true, debug: true }))
-        .pipe(minifier({}, uglifyjs))
+        .pipe(sourcemaps.init({ loadMaps: true }))
+        .pipe(uglifyes())
+        .on('error', function(err) {
+            gutil.log(err.toString());
+            this.emit('end');
+        })
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('dist/scripts'));
     }
