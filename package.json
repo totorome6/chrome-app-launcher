@@ -43,6 +43,6 @@
     "wiredep": "^4.0.0"
   },
   "dependencies": {
-    "sortablejs": "git+git@github.com:RubaXa/Sortable.git"
+    "sortablejs": "git+git@github.com:RubaXa/Sortable.git#cc1eb94101e70dafc25964bff752e28d622bdf7e"
   }
 }
